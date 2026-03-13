@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2c3acab1d014a7289e1b06790dc7d2, type: 3}
+  m_Name: Enemy Prefab Settings
+  m_EditorClassIdentifier: Assembly-CSharp::Bellepron.EnemySettings
+  _entries:
+  - Type: 0
+    Prefab: {fileID: 6476445379522924354, guid: 2d5a99acfae79422d86ac50e976ed613, type: 3}
+  - Type: 1
+    Prefab: {fileID: 6476445379522924354, guid: 989420ecf39499b40992c3ee9afa4e0a, type: 3}
+  - Type: 2
+    Prefab: {fileID: 6476445379522924354, guid: fa6fcab11c2a85f4ead657dc4e1fb393, type: 3}

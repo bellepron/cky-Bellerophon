@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d78adf900c151b14ca28cfcf8f65de34, type: 3}
+  m_Name: Player Settings
+  m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Player.PlayerSettings
+  <PlayerPrefab>k__BackingField: {fileID: 5801962925533996317, guid: c1f81377267bd964581ad3642c6c38bf, type: 3}
+  <PlayerMovementControllerSettings>k__BackingField:
+    moveSpeed: 9
+  <PlayerAnimatorControllerSettings>k__BackingField:
+    attackFadeDuration: 0.05
+    dashAttackFadeDuration: 0.05
+    movementFadeDuration: 0.1
+    dashFadeDuration: 0.1
+  <PlayerAttackControllerSettings>k__BackingField:
+    attackForwardForce: 3.5
+    wallLayer:
+      serializedVersion: 2
+      m_Bits: 2048
+    obstacleLayer:
+      serializedVersion: 2
+      m_Bits: 1024
+    enemyLayer:
+      serializedVersion: 2
+      m_Bits: 512
+  <PlayerDashControllerSettings>k__BackingField:
+    playerDashEffectPrefab: {fileID: 6481795459346029894, guid: 9ae8d1130da3845f1a8a402555bea7e2, type: 3}
+    dashSpeed: 25
+    dashDuration: 0.35
+    maxDashCharges: 3
+    dashRechargeTime: 0.6
+    dashCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    skin: 0.05
+    wallLayer:
+      serializedVersion: 2
+      m_Bits: 2048
+    obstacleLayer:
+      serializedVersion: 2
+      m_Bits: 1024
+    enemyLayer:
+      serializedVersion: 2
+      m_Bits: 512
+    dashDamage: 10
+    dashKnockback: 5
+    dashCameraImpulseForce: 0.45
+  <PlayerGhostTrailControllerSettings>k__BackingField:
+    playerGhostPrefab: {fileID: 6366991956694002490, guid: 7e45a891884951a42bbfd34cc0831bd7, type: 3}
+    ghostTrailMaterial: {fileID: 2100000, guid: 43aa715fde08c42ba98b4bb899736469, type: 2}
+    ghostLifeTime: 0.2
+    ghostSpawnDistance: 0.5
+    ghostColor: {r: 0.3, g: 0.8, b: 1, a: 0.7058824}

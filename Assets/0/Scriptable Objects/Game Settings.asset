@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 167973b845ace4c6aa4e8bf0d3ef56f7, type: 3}
+  m_Name: Game Settings
+  m_EditorClassIdentifier: Assembly-CSharp::GameSettings
+  GameInstallerSettings:
+    playerPrefab: {fileID: 1678094274371789590, guid: 1fbb0b30d332446e5a4b6159b34339f6, type: 3}
+    playerGhostPrefab: {fileID: 6366991956694002490, guid: 7e45a891884951a42bbfd34cc0831bd7, type: 3}
+    playerDashEffectPrefab: {fileID: 6481795459346029894, guid: 9ae8d1130da3845f1a8a402555bea7e2, type: 3}
+    SatyrFacadePrefab: {fileID: 6476445379522924354, guid: 2d5a99acfae79422d86ac50e976ed613, type: 3}
+    minotaurFacadePrefab: {fileID: 6476445379522924354, guid: 989420ecf39499b40992c3ee9afa4e0a, type: 3}
+    hydraFacadePrefab: {fileID: 6476445379522924354, guid: fa6fcab11c2a85f4ead657dc4e1fb393, type: 3}
+  PlayerMovementControllerSettings:
+    moveSpeed: 9
+  PlayerAnimatorControllerSettings:
+    attackFadeDuration: 0.05
+    dashAttackFadeDuration: 0.05
+    movementFadeDuration: 0.1
+    dashFadeDuration: 0.1
+  PlayerAttackControllerSettings:
+    attackForwardForce: 3.5
+    wallLayer:
+      serializedVersion: 2
+      m_Bits: 2048
+    obstacleLayer:
+      serializedVersion: 2
+      m_Bits: 1024
+    enemyLayer:
+      serializedVersion: 2
+      m_Bits: 512
+  PlayerDashControllerSettings:
+    dashSpeed: 22
+    dashDuration: 0.4
+    maxDashCharges: 3
+    dashRechargeTime: 0.6
+    dashCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    skin: 0.05
+    wallLayer:
+      serializedVersion: 2
+      m_Bits: 2048
+    obstacleLayer:
+      serializedVersion: 2
+      m_Bits: 1024
+    enemyLayer:
+      serializedVersion: 2
+      m_Bits: 512
+    dashDamage: 10
+    dashKnockback: 5000000
+    dashCameraImpulseForce: 0.45
+  PlayerGhostTrailControllerSettings:
+    ghostTrailMaterial: {fileID: 2100000, guid: 43aa715fde08c42ba98b4bb899736469, type: 2}
+    ghostLifeTime: 0.2
+    ghostSpawnDistance: 0.35
+    ghostColor: {r: 0.3, g: 0.8, b: 1, a: 0.7058824}
