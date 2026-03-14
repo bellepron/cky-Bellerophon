@@ -1,5 +1,5 @@
-using UnityEngine;
 using Bellepron.Weapon;
+using UnityEngine;
 using Zenject;
 
 namespace Bellepron.Player
@@ -10,7 +10,7 @@ namespace Bellepron.Player
 
         public void BeginHit()
         {
-            if (_playerFacade.Weapon is MeleeWeaponAbstract melee)
+            if (_playerFacade.Weapon is MeleeWeapon melee)
             {
                 melee.BeginHit();
             }
@@ -18,7 +18,7 @@ namespace Bellepron.Player
 
         public void EndHit()
         {
-            if (_playerFacade.Weapon is MeleeWeaponAbstract melee)
+            if (_playerFacade.Weapon is MeleeWeapon melee)
             {
                 melee.EndHit();
             }
@@ -26,7 +26,7 @@ namespace Bellepron.Player
 
         public void Shoot()
         {
-            if (_playerFacade.Weapon is RangedWeaponAbstract ranged)
+            if (_playerFacade.Weapon is RangedWeapon ranged)
             {
                 ranged.Shoot();
             }

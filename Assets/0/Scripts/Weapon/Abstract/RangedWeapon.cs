@@ -1,9 +1,8 @@
 using UnityEngine;
-using Bellepron.Weapon;
 
 namespace Bellepron.Weapon
 {
-    public abstract class RangedWeaponAbstract : WeaponAbstract
+    public class RangedWeapon : WeaponAbstract
     {
         RangedWeaponSettings _settings;
         public RangedWeaponSettings Settings

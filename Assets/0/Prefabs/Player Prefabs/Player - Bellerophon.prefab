@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFacade
   <State>k__BackingField: 0
-  <Weapon>k__BackingField: {fileID: 1276471398250851884}
+  <Weapon>k__BackingField: {fileID: 5267746334604741631}
   animator: {fileID: 6503640385068990332}
   capsuleCollider: {fileID: 1644166587493068145}
   rb: {fileID: 7074166831682645249}
@@ -448,17 +448,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f57c5143f5614edbb3fc43ba5cc81df, type: 3}
---- !u!114 &1276471398250851884 stripped
+--- !u!114 &5267746334604741631 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2616210298103096522, guid: 7f57c5143f5614edbb3fc43ba5cc81df, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8998897939106234649, guid: 7f57c5143f5614edbb3fc43ba5cc81df, type: 3}
   m_PrefabInstance: {fileID: 3888940324568386278}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd939d703a908466f818b9cde1a2cdf8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c09284005c54d244998f8e85e52f93f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::cky.Weapon.Sword
+  m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Weapon.MeleeWeapon
 --- !u!4 &8839974797898017169 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5716665109280629623, guid: 7f57c5143f5614edbb3fc43ba5cc81df, type: 3}

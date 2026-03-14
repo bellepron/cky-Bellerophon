@@ -21,7 +21,7 @@ namespace Bellepron.Player
 
             if (_playerFacade.Weapon != null)
             {
-                if (_playerFacade.Weapon is MeleeWeaponAbstract melee)
+                if (_playerFacade.Weapon is MeleeWeapon melee)
                 {
                     melee.attackStep = attackStep;
                 }

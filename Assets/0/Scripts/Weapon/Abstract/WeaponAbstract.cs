@@ -1,6 +1,6 @@
 using UnityEditor.Animations;
-using UnityEngine;
 using Bellepron.Player;
+using UnityEngine;
 using Zenject;
 
 namespace Bellepron.Weapon
@@ -9,8 +9,8 @@ namespace Bellepron.Weapon
     {
         [field: SerializeField] public WeaponSettingsAbstract SettingsAbstract { get; private set; }
         public AnimatorController AnimatorController => SettingsAbstract.AnimatorController;
-        public PlayerFacade PlayerFacade { get; private set; }
         [Inject] protected readonly PlayerAttackController.Settings playerAttackControllerSettings;
+        public PlayerFacade PlayerFacade { get; private set; }
 
         public void SetPlayerFacade(PlayerFacade playerFacade) => PlayerFacade = playerFacade;
     }

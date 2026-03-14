@@ -34,14 +34,7 @@ namespace Bellepron.Player
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
             rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-            _playerInputHandler.Enable();
-
             if (Weapon != null) SetWeapon(Weapon);
-        }
-
-        private void OnDestroy()
-        {
-            _playerInputHandler.Disable();
         }
 
         public void SetWeapon(WeaponAbstract weapon)

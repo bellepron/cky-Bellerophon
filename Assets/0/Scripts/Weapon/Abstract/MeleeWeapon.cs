@@ -1,11 +1,10 @@
-using Bellepron.Player;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Bellepron.Player;
 using UnityEngine;
 
 namespace Bellepron.Weapon
 {
-    public abstract class MeleeWeaponAbstract : WeaponAbstract
+    public class MeleeWeapon : WeaponAbstract
     {
         MeleeWeaponSettings _settings;
         public MeleeWeaponSettings Settings
@@ -35,6 +34,8 @@ namespace Bellepron.Weapon
 
         protected virtual void Update()
         {
+            if (PlayerFacade == null) return;
+
             bool isDashAttacking = PlayerFacade.State == Bellepron.Player.States.DashAttack;
             bool isAttacking = PlayerFacade.State == Bellepron.Player.States.Attack
                  || isDashAttacking;
