@@ -29,6 +29,7 @@ namespace Bellepron.Player
             Container.Bind<AttackState>().AsSingle();
             Container.Bind<DashState>().AsSingle();
             Container.Bind<DashAttackState>().AsSingle();
+            Container.Bind<PlayerDamageHandler>().AsSingle();
         }
     }
 }

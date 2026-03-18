@@ -19,6 +19,7 @@ namespace Bellepron.Player
         [Inject] readonly CinemachineImpulseSource _cinemachineImpulseSource;
         [Inject] readonly PlayerStatus _playerStatus;
         [Inject] readonly PlayerDashEffect.Factory _playerDashEffectFactory;
+        [Inject] readonly PlayerDamageHandler _playerDamageHandler;
         [Inject] readonly TimeScaleManager _timeScaleManager;
 
         int _dashCharges;
@@ -99,6 +100,8 @@ namespace Bellepron.Player
 
         void StartDash()
         {
+            _playerDamageHandler.ClearHitRegistry();
+
             var dashDir = _playerFacade.Forward;
 
             _playerStatus.SetInvulnerable(true);
@@ -115,7 +118,7 @@ namespace Bellepron.Player
             _dashStartPos = _playerFacade.Position;
 
             // --- 1. hedefi hesapla ---
-            Vector3 firstTarget = ComputeDashTargetSafe(_dashStartPos, dashDir, _settings.dashDistance);
+            Vector3 firstTarget = ComputeDashTargetSafe(_dashStartPos, dashDir, _settings.dashDistance, _playerFacade.CapsuleRadius);
             float firstSegmentDistance = _totalDeltaDistance; // ComputeDashTargetSafe içinde set edilir
 
             // --- Duvara çarptıysa 2. hedefi hesapla ---
@@ -127,7 +130,7 @@ namespace Bellepron.Player
             if (remainingDistance > 0.05f && _projectedDir.sqrMagnitude > 0.001f)
             {
                 Vector3 slideDir = _projectedDir.normalized;
-                secondTarget = ComputeDashTargetSafe(firstTarget, slideDir, remainingDistance);
+                secondTarget = ComputeDashTargetSafe(firstTarget, slideDir, remainingDistance, _playerFacade.CapsuleRadius);
                 secondSegmentDistance = _totalDeltaDistance;
                 hasSecondSegment = secondSegmentDistance > 0.05f;
             }
@@ -169,8 +172,8 @@ namespace Bellepron.Player
 
                     Vector3 nextPos = Vector3.Lerp(segStart, firstTarget, curvedT);
 
-                    ResolveWallsSphere(ref nextPos);
-                    DamageEnemiesBetween(_lastFramePos, nextPos, dashDir);
+                    // ResolveWallsSphere(ref nextPos, _lastFramePos);
+                    _playerDamageHandler.DamageEnemiesBetween(_lastFramePos, nextPos, dashDir, _settings.dashDamage, _settings.dashKnockback, _settings.enemyLayer);
 
                     _playerFacade.MovePosition(nextPos);
                     _lastFramePos = nextPos;
@@ -201,8 +204,8 @@ namespace Bellepron.Player
 
                         Vector3 nextPos = Vector3.Lerp(segStart, secondTarget, curvedT);
 
-                        ResolveWallsSphere(ref nextPos);
-                        DamageEnemiesBetween(_lastFramePos, nextPos, slideDir);
+                        // ResolveWallsSphere(ref nextPos, _lastFramePos);
+                        _playerDamageHandler.DamageEnemiesBetween(_lastFramePos, nextPos, dashDir, _settings.dashDamage, _settings.dashKnockback, _settings.enemyLayer);
 
                         _playerFacade.MovePosition(nextPos);
                         _lastFramePos = nextPos;
@@ -225,37 +228,41 @@ namespace Bellepron.Player
             _playerStatus.SetInvulnerable(false);
         }
 
-        void ResolveWallsSphere(ref Vector3 targetPos)
+        // Use if walls are moving.
+        void ResolveWallsSphere(ref Vector3 nextPos, Vector3 fromPos)
         {
-            Vector3 dir = (targetPos - _playerFacade.Position).normalized;
-            float dist = Vector3.Distance(_playerFacade.Position, targetPos);
+            Vector3 dir = (nextPos - fromPos);
+            float dist = dir.magnitude;
+            if (dist <= 0f) return;
+
+            dir /= dist;
             float radius = _playerFacade.CapsuleRadius;
 
-            if (Physics.SphereCast(_playerFacade.Position, radius, dir, out RaycastHit hit, dist, _settings.wallLayer))
+            if (Physics.SphereCast(fromPos, radius, dir, out RaycastHit hit, dist, _settings.wallLayer | _settings.obstacleLayer))
             {
-                targetPos = _playerFacade.Position + dir * Mathf.Max(0f, hit.distance - _settings.skin);
+                nextPos = fromPos + dir * Mathf.Max(0f, hit.distance - _settings.skin);
             }
         }
 
-        Vector3 ComputeDashTargetSafe(Vector3 start, Vector3 dir, float maxDistance)
+        Vector3 ComputeDashTargetSafe(Vector3 start, Vector3 dir, float maxDistance, float radius)
         {
-            float radius = _playerFacade.CapsuleRadius;
-
             Vector3 origin = start;
             Vector3 targetPoint = start + dir * maxDistance;
 
             Ray ray = new Ray(origin, dir);
-            bool isRayCollidedWithWall = false;
             RaycastHit hit = default;
 
             if (Physics.Raycast(ray, out hit, maxDistance, _settings.wallLayer))
             {
                 targetPoint = hit.point - dir * radius;
                 _projectedDir = Vector3.ProjectOnPlane(dir, hit.normal);
-                isRayCollidedWithWall = true;
             }
 
             int steps = 20;
+            // if (isRayCollidedWithWall)
+            // {
+            //     steps = (Mathf.RoundToInt(Vector3.Distance(start, targetPoint)) + 1) * 2;
+            // }
             bool isFinded = false;
 
             for (int i = 0; i <= steps; i++)
@@ -265,30 +272,31 @@ namespace Bellepron.Player
 
                 if (_dashCollisionChecker.IsPositionAvailable(stepPoint, radius, _settings.wallLayer | _settings.obstacleLayer))
                 {
-                    _coroutineRunner.StartCoroutine(ShowDebugSphere(stepPoint, 3.0f, 0.25f, Color.black));
+                    _coroutineRunner.StartCoroutine(ShowDebugSphere(stepPoint, 3.0f, radius, Color.black));
+
                     targetPoint = stepPoint;
                     isFinded = true;
                     break;
                 }
                 else
                 {
-                    _coroutineRunner.StartCoroutine(ShowDebugSphere(stepPoint, 3.0f, 0.25f, Color.black));
-                    if (isRayCollidedWithWall)
-                        _projectedDir = Vector3.ProjectOnPlane(dir, hit.normal);
+                    _coroutineRunner.StartCoroutine(ShowDebugSphere(stepPoint, 3.0f, radius, Color.black));
                 }
             }
 
             if (!isFinded)
             {
-                targetPoint = start; // _playerFacade.Position yerine start kullan (2. segment için doğru)
+                if (Physics.Raycast(ray, out hit, maxDistance, _settings.wallLayer | _settings.obstacleLayer))
+                {
+                    _projectedDir = Vector3.ProjectOnPlane(dir, hit.normal);
+                }
+
+                targetPoint = start;
             }
 
             _totalDeltaDistance = Vector3.Distance(start, targetPoint);
 
-            if (isRayCollidedWithWall)
-                _coroutineRunner.StartCoroutine(ShowDebugSphere(targetPoint, 1f, radius, isFinded ? Color.yellow : Color.red));
-            else
-                _coroutineRunner.StartCoroutine(ShowDebugSphere(targetPoint, 1f, radius, isFinded ? Color.yellow : Color.blue));
+            _coroutineRunner.StartCoroutine(ShowDebugSphere(targetPoint, 1f, radius, isFinded ? Color.yellow : Color.blue));
 
             return targetPoint;
         }
@@ -301,36 +309,6 @@ namespace Bellepron.Player
                 timer += Time.deltaTime;
                 GizmoHelper.DrawWireSphere(center, radius, color, segments);
                 yield return null;
-            }
-        }
-
-        void DamageEnemiesBetween(Vector3 from, Vector3 to, Vector3 dashDir)
-        {
-            Vector3 dir = to - from;
-            float dist = dir.magnitude;
-            if (dist <= 0f) return;
-
-            dir /= dist;
-            float radius = _playerFacade.CapsuleRadius;
-
-            RaycastHit[] hits = Physics.SphereCastAll(from, radius, dir, dist, _settings.enemyLayer);
-
-            foreach (var hit in hits)
-            {
-                if (_hitThisDash.Contains(hit.collider)) continue;
-                _hitThisDash.Add(hit.collider);
-
-                if (hit.collider.TryGetComponent<IDamageable>(out var iDamageable))
-                {
-                    iDamageable.TakeDamage(_settings.dashDamage);
-                }
-
-                if (hit.collider.attachedRigidbody != null)
-                {
-                    hit.collider.attachedRigidbody.AddForce(dashDir * _settings.dashKnockback, ForceMode.Impulse);
-                }
-
-                _timeScaleManager.StartHitStop();
             }
         }
 
