@@ -22,6 +22,7 @@ namespace Bellepron
             SignalBusInstaller.Install(Container);
 
             Container.DeclareSignal<PlayerSpawnedSignal>();
+            Container.DeclareSignal<PlayerWeaponChangedSignal>();
             Container.DeclareSignal<PlayerDashControllerCreatedSignal>();
             Container.DeclareSignal<DashChargeUsedSignal>();
             Container.DeclareSignal<DashChargeRestoredSignal>();

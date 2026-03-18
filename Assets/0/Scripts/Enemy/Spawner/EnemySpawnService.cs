@@ -5,7 +5,7 @@ namespace Bellepron.Enemy
 {
     public interface IEnemySpawnService
     {
-        EnemyFacade Spawn(EnemyTypes type, Vector3 position);
+        EnemyFacade Spawn(EnemyType type, Vector3 position);
         void Despawn(EnemyFacade enemy);
         void DespawnAll();
     }
@@ -14,21 +14,21 @@ namespace Bellepron.Enemy
     public class EnemySpawnService : IEnemySpawnService
     {
         // Zenject, [Inject(Id = EnemyType.X)] ile doðru pool'u atar
-        [Inject(Id = EnemyTypes.Satyr)] private EnemyFacadePool _satyrPool;
-        [Inject(Id = EnemyTypes.Minotaur)] private EnemyFacadePool _minotaurPool;
-        [Inject(Id = EnemyTypes.Hydra)] private EnemyFacadePool _hydraPool;
+        [Inject(Id = EnemyType.Satyr)] private EnemyFacadePool _satyrPool;
+        [Inject(Id = EnemyType.Minotaur)] private EnemyFacadePool _minotaurPool;
+        [Inject(Id = EnemyType.Hydra)] private EnemyFacadePool _hydraPool;
 
-        public EnemyFacade Spawn(EnemyTypes type, Vector3 position)
+        public EnemyFacade Spawn(EnemyType type, Vector3 position)
         {
             var pool = GetPool(type);
             return pool.Spawn(position, pool);
         }
 
-        private EnemyFacadePool GetPool(EnemyTypes type) => type switch
+        private EnemyFacadePool GetPool(EnemyType type) => type switch
         {
-            EnemyTypes.Satyr => _satyrPool,
-            EnemyTypes.Minotaur => _minotaurPool,
-            EnemyTypes.Hydra => _hydraPool,
+            EnemyType.Satyr => _satyrPool,
+            EnemyType.Minotaur => _minotaurPool,
+            EnemyType.Hydra => _hydraPool,
             _ => throw new System.ArgumentOutOfRangeException(nameof(type))
         };
 

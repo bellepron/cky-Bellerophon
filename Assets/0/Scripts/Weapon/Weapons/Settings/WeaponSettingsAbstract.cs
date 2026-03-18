@@ -5,7 +5,10 @@ namespace Bellepron.Weapon
 {
     public class WeaponSettingsAbstract : ScriptableObject
     {
-        [field: SerializeField] public WeaponTypes WeaponType;
+        [field: SerializeField] public int Id { get; private set; }
+        [field: SerializeField] public WeaponType WeaponType { get; private set; }
+        [field: SerializeField] public WeaponHoldType WeaponHoldType { get; private set; }
+        [field: SerializeField] public WeaponStance WeaponStance { get; private set; }
         [field: SerializeField] public AnimatorController AnimatorController { get; private set; }
         [field: SerializeField] public int[] Damage { get; private set; } = new int[] { 10, 15, 25 };
         [field: SerializeField] public int[] Knockback { get; private set; } = new int[] { 5000000, 5000000, 6000000 };

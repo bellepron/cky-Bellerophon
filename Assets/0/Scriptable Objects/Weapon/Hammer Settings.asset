@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9492f5df027b4c2bbef313f45fe98ba, type: 3}
   m_Name: Hammer Settings
   m_EditorClassIdentifier: Assembly-CSharp::cky.Weapon.MeleeWeaponSettings
-  WeaponType: 3
+  <Id>k__BackingField: 2
+  <WeaponType>k__BackingField: 3
+  <WeaponHoldType>k__BackingField: 0
+  <WeaponStance>k__BackingField: 0
   <AnimatorController>k__BackingField: {fileID: 9100000, guid: 974c1740dd63a4c9ea0ca249a25b2cdf, type: 2}
   <Damage>k__BackingField: 0a0000000f00000019000000
   <Knockback>k__BackingField: 404b4c00404b4c0080c3c901

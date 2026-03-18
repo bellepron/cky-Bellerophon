@@ -12,7 +12,7 @@ namespace Bellepron.Weapon
             get
             {
                 if (_settings == null)
-                    _settings = SettingsAbstract as MeleeWeaponSettings;
+                    _settings = base.SettingsAbtract as MeleeWeaponSettings;
 
                 return _settings;
             }
@@ -53,7 +53,7 @@ namespace Bellepron.Weapon
                 if (point == null) continue;
 
                 // OverlapSphere ile hitpoint etrafındaki enemyleri bul
-                Collider[] hits = Physics.OverlapSphere(point.position, radius, playerAttackControllerSettings.enemyLayer);
+                Collider[] hits = Physics.OverlapSphere(point.position, radius, PlayerAttackControllerSettings.enemyLayer);
 
                 foreach (var hit in hits)
                 {
@@ -87,7 +87,7 @@ namespace Bellepron.Weapon
             Vector3 target = enemy.ClosestPoint(origin);
 
             // Linecast ile player → enemy arasında obstacle kontrolü
-            return Physics.Linecast(origin, target, playerAttackControllerSettings.wallLayer | playerAttackControllerSettings.obstacleLayer);
+            return Physics.Linecast(origin, target, PlayerAttackControllerSettings.wallLayer | PlayerAttackControllerSettings.obstacleLayer);
         }
 
         public virtual void BeginHit()

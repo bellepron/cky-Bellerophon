@@ -9,8 +9,8 @@ namespace Bellepron
 {
     public class GameInstaller : MonoInstaller
     {
-        [Inject] Settings _settings;
-        [Inject] PlayerSettings _playerSettings;
+        [Inject] readonly Settings _settings;
+        [Inject] readonly PlayerSettings _playerSettings;
         [SerializeField] CoroutineRunner coroutineRunner;
         [SerializeField] EnemyPrefabSettings _enemyPrefabSettings;
 
@@ -56,9 +56,9 @@ namespace Bellepron
             Container.BindInstance(_enemiesParent).WithId("EnemiesParent").AsSingle();
 
             //// Resolve yok — Zenject constructor injection ile yapıyorum.
-            BindEnemyPool(EnemyTypes.Satyr);
-            BindEnemyPool(EnemyTypes.Minotaur);
-            BindEnemyPool(EnemyTypes.Hydra);
+            BindEnemyPool(EnemyType.Satyr);
+            BindEnemyPool(EnemyType.Minotaur);
+            BindEnemyPool(EnemyType.Hydra);
 
             // Spawner interface
             Container.Bind<IEnemySpawnService>()
@@ -100,7 +100,7 @@ namespace Bellepron
 
         #region Enemy Pool
 
-        private void BindEnemyPool(EnemyTypes type)
+        private void BindEnemyPool(EnemyType type)
         {
             var prefab = _enemyPrefabSettings.GetPrefab(type);
             var poolSize = _enemyPrefabSettings.GetInitialPoolSize(type);

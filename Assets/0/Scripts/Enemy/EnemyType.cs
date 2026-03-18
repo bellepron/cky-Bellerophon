@@ -1,7 +1,7 @@
 
 namespace Bellepron.Enemy
 {
-    public enum EnemyTypes
+    public enum EnemyType
     {
         Satyr,
         Minotaur,

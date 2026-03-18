@@ -1,17 +1,20 @@
 using UnityEditor.Animations;
 using Bellepron.Player;
 using UnityEngine;
-using Zenject;
 
 namespace Bellepron.Weapon
 {
     public abstract class WeaponAbstract : MonoBehaviour
     {
-        [field: SerializeField] public WeaponSettingsAbstract SettingsAbstract { get; private set; }
-        public AnimatorController AnimatorController => SettingsAbstract.AnimatorController;
-        [Inject] protected readonly PlayerAttackController.Settings playerAttackControllerSettings;
+        [field: SerializeField] public WeaponSettingsAbstract SettingsAbtract { get; private set; }
+        public AnimatorController AnimatorController => SettingsAbtract.AnimatorController;
         public PlayerFacade PlayerFacade { get; private set; }
+        public PlayerAttackController.Settings PlayerAttackControllerSettings { get; private set; }
 
-        public void SetPlayerFacade(PlayerFacade playerFacade) => PlayerFacade = playerFacade;
+        public void SetPlayerFacade(PlayerFacade playerFacade, PlayerAttackController.Settings playerAttackControllerSettings)
+        {
+            PlayerFacade = playerFacade;
+            PlayerAttackControllerSettings = playerAttackControllerSettings;
+        }
     }
 }

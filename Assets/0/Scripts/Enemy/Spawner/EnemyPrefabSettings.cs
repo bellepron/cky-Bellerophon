@@ -9,7 +9,7 @@ namespace Bellepron.Enemy
     {
         [SerializeField] private List<EnemyPrefabEntry> _entries = new();
 
-        public GameObject GetPrefab(EnemyTypes type)
+        public GameObject GetPrefab(EnemyType type)
         {
             foreach (var entry in _entries)
             {
@@ -21,7 +21,7 @@ namespace Bellepron.Enemy
                 nameof(type), $"No prefab registered for EnemyType: {type}");
         }
 
-        public int GetInitialPoolSize(EnemyTypes type)
+        public int GetInitialPoolSize(EnemyType type)
         {
             foreach (var entry in _entries)
                 if (entry.Type == type) return entry.InitialPoolSize;
@@ -32,7 +32,7 @@ namespace Bellepron.Enemy
         [Serializable]
         private class EnemyPrefabEntry
         {
-            public EnemyTypes Type;
+            public EnemyType Type;
             public GameObject Prefab;
             public int InitialPoolSize = 1;
         }

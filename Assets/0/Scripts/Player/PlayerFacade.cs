@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Bellepron.Weapon;
 using UnityEngine;
 using Zenject;
@@ -11,6 +12,8 @@ namespace Bellepron.Player
 
         [Inject] readonly PlayerInputHandler _playerInputHandler;
         [Inject] readonly PlayerAnimatorController _playerAnimatorController;
+        [Inject] readonly PlayerAttackController.Settings _playerAttackControllerSettings;
+        [Inject] readonly WeaponHolder _weaponHolder;
 
         [Space(10)]
         [SerializeField] Animator animator;
@@ -33,14 +36,17 @@ namespace Bellepron.Player
             rb.interpolation = RigidbodyInterpolation.Interpolate;
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
             rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-
-            if (Weapon != null) SetWeapon(Weapon);
         }
 
         public void SetWeapon(WeaponAbstract weapon)
         {
+            if (Weapon != null)
+            {
+                Weapon.gameObject.SetActive(false);
+            }
+
             Weapon = weapon;
-            Weapon.SetPlayerFacade(this);
+            Weapon.SetPlayerFacade(this, _playerAttackControllerSettings);
             _playerAnimatorController.SetAnimatorController();
         }
 
@@ -57,6 +63,11 @@ namespace Bellepron.Player
         public void SetVelocity(Vector3 newVelocity)
         {
             rb.linearVelocity = newVelocity;
+        }
+
+        public List<Transform> GetWeaponHoldPoints(WeaponHoldType holdType, WeaponStance stance)
+        {
+            return _weaponHolder.GetHoldPoints(holdType, stance);
         }
 
         void OnValidate()

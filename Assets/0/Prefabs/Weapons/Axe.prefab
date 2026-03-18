@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09284005c54d244998f8e85e52f93f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::cky.Weapon.Sword
-  <SettingsAbstract>k__BackingField: {fileID: 11400000, guid: 98d783d43dcc84d89b3f382c23b0be04, type: 2}
+  <SettingsAbtract>k__BackingField: {fileID: 11400000, guid: 98d783d43dcc84d89b3f382c23b0be04, type: 2}
   hitPoints:
   - {fileID: 8330064838582133473}
   - {fileID: 345406291972748451}

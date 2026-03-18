@@ -13,7 +13,7 @@ namespace Bellepron.Player
 
         public void TryInteract()
         {
-            _currentInteractable?.Interact(_playerFacade);
+            _currentInteractable?.Interact();
         }
 
         public void FixedTick()

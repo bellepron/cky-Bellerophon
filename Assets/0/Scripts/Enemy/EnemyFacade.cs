@@ -7,7 +7,7 @@ namespace Bellepron.Enemy
 {
     public class EnemyFacade : MonoBehaviour, IInitializable, IDamageable, IPoolable<Vector3, IMemoryPool>, IDisposable
     {
-        [field: SerializeField] public EnemyTypes EnemyType { get; private set; }
+        [field: SerializeField] public EnemyType EnemyType { get; private set; }
         [Inject] EnemyHealthController _enemyHealthController;
 
         [Space(10)]

@@ -7,7 +7,7 @@ namespace Bellepron.Enemy
     public class EnemyInstaller : MonoInstaller
     {
         // Hangi tip icin kuruldugunu GameInstaller atar (BindInstance ile)
-        [SerializeField] EnemyTypes _enemyType;
+        [SerializeField] EnemyType _enemyType;
         [SerializeField] HealthBarController _healthBarController;
 
         public override void InstallBindings()
@@ -19,15 +19,15 @@ namespace Bellepron.Enemy
 
             switch (_enemyType)
             {
-                case EnemyTypes.Satyr:
+                case EnemyType.Satyr:
                     BindSatyr();
                     break;
 
-                case EnemyTypes.Minotaur:
+                case EnemyType.Minotaur:
                     BindMinotaur();
                     break;
 
-                case EnemyTypes.Hydra:
+                case EnemyType.Hydra:
                     BindHydra();
                     break;
             }

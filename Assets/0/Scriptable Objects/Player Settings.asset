@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: Player Settings
   m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Player.PlayerSettings
   <PlayerPrefab>k__BackingField: {fileID: 5801962925533996317, guid: c1f81377267bd964581ad3642c6c38bf, type: 3}
+  <Weapons>k__BackingField:
+  - {fileID: 7898026004000598625, guid: 247628a256ff3014090d33a19d1bc773, type: 3}
+  - {fileID: 2369103127839508992, guid: 089338f8b4fc64f598b61f698d579aa8, type: 3}
+  - {fileID: 6049284768167661506, guid: f98baa5b6e26a44abad306eabee04abe, type: 3}
+  - {fileID: 8998897939106234649, guid: 7f57c5143f5614edbb3fc43ba5cc81df, type: 3}
   <PlayerMovementControllerSettings>k__BackingField:
     moveSpeed: 9
   <PlayerAnimatorControllerSettings>k__BackingField:

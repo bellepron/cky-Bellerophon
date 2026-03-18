@@ -10080,7 +10080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09284005c54d244998f8e85e52f93f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Weapon.MeleeWeapon
-  <SettingsAbstract>k__BackingField: {fileID: 11400000, guid: bf34cf4a474704ac3b280b47cb7f75cf, type: 2}
+  <SettingsAbtract>k__BackingField: {fileID: 11400000, guid: bf34cf4a474704ac3b280b47cb7f75cf, type: 2}
   hitPoints:
   - {fileID: 1663451060028993173}
   - {fileID: 5375164287498599504}

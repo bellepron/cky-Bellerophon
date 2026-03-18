@@ -1,4 +1,4 @@
-
+using Bellepron.Weapon;
 using Bellepron.Enemy;
 
 namespace Bellepron
@@ -7,9 +7,15 @@ namespace Bellepron
     {
     }
 
+    public struct PlayerWeaponChangedSignal
+    {
+        public int weaponId;
+        public WeaponType weaponType;
+    }
+
     public struct EnemySpawnedSignal
     {
-        public EnemyTypes spawnedEnemyType;
+        public EnemyType spawnedEnemyType;
     }
 
     #region Dash Signals

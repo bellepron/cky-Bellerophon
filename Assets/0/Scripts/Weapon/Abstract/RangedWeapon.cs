@@ -10,7 +10,7 @@ namespace Bellepron.Weapon
             get
             {
                 if (_settings == null)
-                    _settings = SettingsAbstract as RangedWeaponSettings;
+                    _settings = base.SettingsAbtract as RangedWeaponSettings;
 
                 return _settings;
             }
