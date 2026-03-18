@@ -22,12 +22,14 @@ namespace Bellepron.Player
         [Inject] readonly TimeScaleManager _timeScaleManager;
 
         int _dashCharges;
-        float _dashTimer;
         float _rechargeTimer;
         Vector3 _dashStartPos;
-        Vector3 _dashTargetPos;
         Vector3 _lastFramePos;
-        HashSet<Collider> hitThisDash = new HashSet<Collider>(); DashCollisionChecker _dashCollisionChecker;
+        HashSet<Collider> _hitThisDash = new HashSet<Collider>();
+        DashCollisionChecker _dashCollisionChecker;
+
+        float _totalDeltaDistance;
+        Vector3 _projectedDir;
 
         public bool isDashing;
 
@@ -38,7 +40,6 @@ namespace Bellepron.Player
         {
             _signalBus.Fire<PlayerDashControllerCreatedSignal>();
             _dashCharges = _settings.maxDashCharges;
-
             SetDashCollisionController();
         }
 
@@ -53,7 +54,6 @@ namespace Bellepron.Player
                 HideFlags.DontSaveInEditor;
 
             dashCollisionCheckerObject.transform.position = Vector3.one * 999999;
-
             _dashCollisionChecker = dashCollisionCheckerObject.AddComponent<DashCollisionChecker>();
         }
 
@@ -94,15 +94,7 @@ namespace Bellepron.Player
 
         public bool CanDash()
         {
-            if (_dashCharges > 0)
-            {
-                if (!isDashing)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return _dashCharges > 0 && !isDashing;
         }
 
         void StartDash()
@@ -119,16 +111,33 @@ namespace Bellepron.Player
             _rechargeTimer = _settings.dashRechargeTime;
 
             isDashing = true;
-            _dashTimer = 0f;
 
             _dashStartPos = _playerFacade.Position;
-            _dashTargetPos = ComputeDashTargetSafe(_dashStartPos, dashDir, _settings.dashSpeed * _settings.dashDuration);
+
+            // --- 1. hedefi hesapla ---
+            Vector3 firstTarget = ComputeDashTargetSafe(_dashStartPos, dashDir, _settings.dashDistance);
+            float firstSegmentDistance = _totalDeltaDistance; // ComputeDashTargetSafe içinde set edilir
+
+            // --- Duvara çarptıysa 2. hedefi hesapla ---
+            bool hasSecondSegment = false;
+            Vector3 secondTarget = firstTarget;
+            float secondSegmentDistance = 0f;
+
+            float remainingDistance = _settings.dashDistance - firstSegmentDistance;
+            if (remainingDistance > 0.05f && _projectedDir.sqrMagnitude > 0.001f)
+            {
+                Vector3 slideDir = _projectedDir.normalized;
+                secondTarget = ComputeDashTargetSafe(firstTarget, slideDir, remainingDistance);
+                secondSegmentDistance = _totalDeltaDistance;
+                hasSecondSegment = secondSegmentDistance > 0.05f;
+            }
 
             _lastFramePos = _dashStartPos;
+            _hitThisDash.Clear();
 
-            hitThisDash.Clear();
-
-            _coroutineRunner.StartCoroutine(DashRoutine(dashDir));
+            _coroutineRunner.StartCoroutine(
+                DashRoutine(dashDir, firstTarget, firstSegmentDistance, hasSecondSegment, secondTarget, secondSegmentDistance)
+            );
 
             _signalBus.Fire(new DashChargeUsedSignal
             {
@@ -136,23 +145,74 @@ namespace Bellepron.Player
             });
         }
 
-        IEnumerator DashRoutine(Vector3 dashDir)
+        IEnumerator DashRoutine(
+            Vector3 dashDir,
+            Vector3 firstTarget,
+            float firstDistance,
+            bool hasSecondSegment,
+            Vector3 secondTarget,
+            float secondDistance)
         {
-            while (_dashTimer < _settings.dashDuration)
+            // --- 1. Segment ---
+            float firstDuration = firstDistance / _settings.dashSpeed;
+
+            if (firstDuration > 0f)
             {
-                _dashTimer += Time.deltaTime;
-                float t = Mathf.Clamp01(_dashTimer / _settings.dashDuration);
-                float curvedT = _settings.dashCurve.Evaluate(t);
+                float segTimer = 0f;
+                Vector3 segStart = _playerFacade.Position;
 
-                Vector3 nextPos = Vector3.Lerp(_dashStartPos, _dashTargetPos, curvedT);
+                while (segTimer < firstDuration)
+                {
+                    segTimer += Time.deltaTime;
+                    float t = Mathf.Clamp01(segTimer / firstDuration);
+                    float curvedT = _settings.dashCurve.Evaluate(t);
 
-                ResolveWallsSphere(ref nextPos);
-                DamageEnemiesBetween(_lastFramePos, nextPos, dashDir);
+                    Vector3 nextPos = Vector3.Lerp(segStart, firstTarget, curvedT);
 
-                _playerFacade.MovePosition(nextPos);
-                _lastFramePos = nextPos;
+                    ResolveWallsSphere(ref nextPos);
+                    DamageEnemiesBetween(_lastFramePos, nextPos, dashDir);
 
-                yield return null;
+                    _playerFacade.MovePosition(nextPos);
+                    _lastFramePos = nextPos;
+
+                    yield return null;
+                }
+
+                _playerFacade.MovePosition(firstTarget);
+                _lastFramePos = firstTarget;
+            }
+
+            // --- 2. Segment (wall slide) ---
+            if (hasSecondSegment)
+            {
+                float secondDuration = secondDistance / _settings.dashSpeed;
+                Vector3 slideDir = (secondTarget - firstTarget).normalized;
+
+                if (secondDuration > 0f)
+                {
+                    float segTimer = 0f;
+                    Vector3 segStart = firstTarget;
+
+                    while (segTimer < secondDuration)
+                    {
+                        segTimer += Time.deltaTime;
+                        float t = Mathf.Clamp01(segTimer / secondDuration);
+                        float curvedT = _settings.dashCurve.Evaluate(t);
+
+                        Vector3 nextPos = Vector3.Lerp(segStart, secondTarget, curvedT);
+
+                        ResolveWallsSphere(ref nextPos);
+                        DamageEnemiesBetween(_lastFramePos, nextPos, slideDir);
+
+                        _playerFacade.MovePosition(nextPos);
+                        _lastFramePos = nextPos;
+
+                        yield return null;
+                    }
+
+                    _playerFacade.MovePosition(secondTarget);
+                    _lastFramePos = secondTarget;
+                }
             }
 
             StopDash();
@@ -161,7 +221,6 @@ namespace Bellepron.Player
         void StopDash()
         {
             isDashing = false;
-
             _playerGhostTrailController.StopSpawnGhostTrail();
             _playerStatus.SetInvulnerable(false);
         }
@@ -181,18 +240,19 @@ namespace Bellepron.Player
         Vector3 ComputeDashTargetSafe(Vector3 start, Vector3 dir, float maxDistance)
         {
             float radius = _playerFacade.CapsuleRadius;
-            float height = Mathf.Max(_playerFacade.CapsuleHeight, radius * 2f);
 
             Vector3 origin = start;
             Vector3 targetPoint = start + dir * maxDistance;
 
             Ray ray = new Ray(origin, dir);
             bool isRayCollidedWithWall = false;
+            RaycastHit hit = default;
 
-            if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, _settings.wallLayer))
+            if (Physics.Raycast(ray, out hit, maxDistance, _settings.wallLayer))
             {
-                isRayCollidedWithWall = true;
                 targetPoint = hit.point - dir * radius;
+                _projectedDir = Vector3.ProjectOnPlane(dir, hit.normal);
+                isRayCollidedWithWall = true;
             }
 
             int steps = 20;
@@ -213,22 +273,22 @@ namespace Bellepron.Player
                 else
                 {
                     _coroutineRunner.StartCoroutine(ShowDebugSphere(stepPoint, 3.0f, 0.25f, Color.black));
+                    if (isRayCollidedWithWall)
+                        _projectedDir = Vector3.ProjectOnPlane(dir, hit.normal);
                 }
             }
 
             if (!isFinded)
             {
-                targetPoint = _playerFacade.Position;
+                targetPoint = start; // _playerFacade.Position yerine start kullan (2. segment için doğru)
             }
 
+            _totalDeltaDistance = Vector3.Distance(start, targetPoint);
+
             if (isRayCollidedWithWall)
-            {
                 _coroutineRunner.StartCoroutine(ShowDebugSphere(targetPoint, 1f, radius, isFinded ? Color.yellow : Color.red));
-            }
             else
-            {
                 _coroutineRunner.StartCoroutine(ShowDebugSphere(targetPoint, 1f, radius, isFinded ? Color.yellow : Color.blue));
-            }
 
             return targetPoint;
         }
@@ -236,13 +296,10 @@ namespace Bellepron.Player
         IEnumerator ShowDebugSphere(Vector3 center, float duration, float radius, Color color, int segments = 12)
         {
             float timer = 0f;
-
             while (timer < duration)
             {
                 timer += Time.deltaTime;
-
                 GizmoHelper.DrawWireSphere(center, radius, color, segments);
-
                 yield return null;
             }
         }
@@ -260,8 +317,8 @@ namespace Bellepron.Player
 
             foreach (var hit in hits)
             {
-                if (hitThisDash.Contains(hit.collider)) continue;
-                hitThisDash.Add(hit.collider);
+                if (_hitThisDash.Contains(hit.collider)) continue;
+                _hitThisDash.Add(hit.collider);
 
                 if (hit.collider.TryGetComponent<IDamageable>(out var iDamageable))
                 {
@@ -282,7 +339,7 @@ namespace Bellepron.Player
         {
             public GameObject playerDashEffectPrefab;
             public float dashSpeed = 22f;
-            public float dashDuration = 0.18f;
+            public float dashDistance = 4f;
             public int maxDashCharges = 3;
             public float dashRechargeTime = 0.6f;
             public AnimationCurve dashCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);

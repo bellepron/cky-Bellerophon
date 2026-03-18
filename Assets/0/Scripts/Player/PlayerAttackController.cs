@@ -1,5 +1,5 @@
-using UnityEngine;
 using Bellepron.Weapon;
+using UnityEngine;
 using Zenject;
 using System;
 
@@ -11,7 +11,6 @@ namespace Bellepron.Player
         [Inject] readonly PlayerFacade _playerFacade;
         [Inject] readonly PlayerAnimatorController _playerAnimatorController;
         [Inject] readonly PlayerRotationController _playerRotationController;
-        [Inject] readonly TimeScaleManager _timeScaleManager;
 
         public void Attack(int attackStep)
         {

@@ -33,8 +33,8 @@ MonoBehaviour:
       m_Bits: 512
   <PlayerDashControllerSettings>k__BackingField:
     playerDashEffectPrefab: {fileID: 6481795459346029894, guid: 9ae8d1130da3845f1a8a402555bea7e2, type: 3}
-    dashSpeed: 25
-    dashDuration: 0.35
+    dashSpeed: 30
+    dashDistance: 8
     maxDashCharges: 3
     dashRechargeTime: 0.6
     dashCurve:
