@@ -246,7 +246,7 @@ namespace Bellepron.Player
 
         Vector3 ComputeDashTargetSafe(Vector3 start, Vector3 dir, float maxDistance)
         {
-            var radius = _playerFacade.CapsuleRadius;
+            var radius = _playerFacade.CapsuleRadius * 0.95f;
 
             Vector3 origin = start;
             Vector3 targetPoint = start + dir * maxDistance;
