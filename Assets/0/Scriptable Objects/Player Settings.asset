@@ -72,7 +72,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 512
     dashDamage: 10
-    dashKnockback: 5
+    dashKnockback: 5000000
     dashCameraImpulseForce: 0.45
   <PlayerGhostTrailControllerSettings>k__BackingField:
     playerGhostPrefab: {fileID: 6366991956694002490, guid: 7e45a891884951a42bbfd34cc0831bd7, type: 3}

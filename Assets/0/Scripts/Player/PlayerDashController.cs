@@ -118,7 +118,7 @@ namespace Bellepron.Player
             _dashStartPos = _playerFacade.Position;
 
             // --- 1. hedefi hesapla ---
-            Vector3 firstTarget = ComputeDashTargetSafe(_dashStartPos, dashDir, _settings.dashDistance, _playerFacade.CapsuleRadius);
+            Vector3 firstTarget = ComputeDashTargetSafe(_dashStartPos, dashDir, _settings.dashDistance);
             float firstSegmentDistance = _totalDeltaDistance; // ComputeDashTargetSafe içinde set edilir
 
             // --- Duvara çarptıysa 2. hedefi hesapla ---
@@ -130,7 +130,7 @@ namespace Bellepron.Player
             if (remainingDistance > 0.05f && _projectedDir.sqrMagnitude > 0.001f)
             {
                 Vector3 slideDir = _projectedDir.normalized;
-                secondTarget = ComputeDashTargetSafe(firstTarget, slideDir, remainingDistance, _playerFacade.CapsuleRadius);
+                secondTarget = ComputeDashTargetSafe(firstTarget, slideDir, remainingDistance);
                 secondSegmentDistance = _totalDeltaDistance;
                 hasSecondSegment = secondSegmentDistance > 0.05f;
             }
@@ -244,8 +244,10 @@ namespace Bellepron.Player
             }
         }
 
-        Vector3 ComputeDashTargetSafe(Vector3 start, Vector3 dir, float maxDistance, float radius)
+        Vector3 ComputeDashTargetSafe(Vector3 start, Vector3 dir, float maxDistance)
         {
+            var radius = _playerFacade.CapsuleRadius;
+
             Vector3 origin = start;
             Vector3 targetPoint = start + dir * maxDistance;
 

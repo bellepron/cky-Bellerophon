@@ -36,6 +36,7 @@ Transform:
   m_Children:
   - {fileID: 2992303847375197847}
   - {fileID: 8895135789655254770}
+  - {fileID: 1508574359766176968}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4883108996466343698
@@ -276,3 +277,86 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e011d35cabc94c67840a60399ae8097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Enemy.EnemyInstaller
+  _enemyType: 0
+  _healthBarController: {fileID: 8018862808093492779}
+--- !u!1001 &1369981991995930252
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3406516784664278750}
+    m_Modifications:
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2957787981070368436, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2957787981070368436, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5938963203498780560, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+      propertyPath: m_Name
+      value: Enemy UI
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+--- !u!4 &1508574359766176968 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 571023941422375492, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+  m_PrefabInstance: {fileID: 1369981991995930252}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8018862808093492779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8956426419221065895, guid: 8883fc089465c4f01bbb50d6596b6add, type: 3}
+  m_PrefabInstance: {fileID: 1369981991995930252}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0a7194e06b74509b75466031c016c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bellepron.UI.HealthBarController
