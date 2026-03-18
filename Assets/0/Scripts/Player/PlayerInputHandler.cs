@@ -32,26 +32,32 @@ public class PlayerInputHandler : IInitializable, IDisposable
     public bool Get_AttackPressed => inputActions?.Player.Attack.WasPerformedThisFrame() ?? false;
     public bool Get_DashPressed => inputActions?.Player.Dash.WasPerformedThisFrame() ?? false;
 
-    public void Enable()
-    {
-        if (inputActions == null)
-            inputActions = new InputSystem_Actions();
-
-        inputActions.Enable();
-    }
-
-    public void Disable()
-    {
-        inputActions?.Disable();
-    }
-
     public void Initialize()
     {
         Enable();
     }
 
+    public void Enable()
+    {
+        if (inputActions == null)
+            inputActions = new InputSystem_Actions();
+
+        inputActions.Player.Enable();
+    }
+
+    public void Disable()
+    {
+        if (inputActions == null) return;
+
+        inputActions.Player.Disable();
+        inputActions.UI.Disable();
+    }
+
     public void Dispose()
     {
-        Disable();
+        if (inputActions == null) return;
+
+        inputActions.Dispose();
+        inputActions = null;
     }
 }

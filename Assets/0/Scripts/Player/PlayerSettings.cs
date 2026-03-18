@@ -9,6 +9,7 @@ namespace Bellepron.Player
         [field: SerializeField] public GameObject PlayerPrefab { get; private set; }
         [field: SerializeField] public PlayerMovementController.Settings PlayerMovementControllerSettings { get; private set; }
         [field: SerializeField] public PlayerAnimatorController.Settings PlayerAnimatorControllerSettings { get; private set; }
+        [field: SerializeField] public PlayerInteractController.Settings PlayerInteractControllerSettings { get; private set; }
         [field: SerializeField] public PlayerAttackController.Settings PlayerAttackControllerSettings { get; set; }
         [field: SerializeField] public PlayerDashController.Settings PlayerDashControllerSettings { get; set; }
         [field: SerializeField] public PlayerGhostTrailController.Settings PlayerGhostTrailControllerSettings { get; private set; }
@@ -19,6 +20,7 @@ namespace Bellepron.Player
 
             Container.BindInstance(PlayerMovementControllerSettings).IfNotBound();
             Container.BindInstance(PlayerAnimatorControllerSettings).IfNotBound();
+            Container.BindInstance(PlayerInteractControllerSettings).IfNotBound();
             Container.BindInstance(PlayerAttackControllerSettings).IfNotBound();
             Container.BindInstance(PlayerDashControllerSettings).IfNotBound();
             Container.BindInstance(PlayerGhostTrailControllerSettings).IfNotBound();

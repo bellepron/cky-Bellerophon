@@ -8,6 +8,7 @@ namespace Bellepron.Player
         [Inject] readonly PlayerMovementController _playerMovementController;
         [Inject] readonly PlayerStateMachine _stateMachine;
         [Inject] readonly PlayerAnimatorController _playerAnimatorController;
+        [Inject] readonly PlayerInteractController _playerInteractController;
 
         public override void Enter()
         {
@@ -34,6 +35,10 @@ namespace Bellepron.Player
             else if (_playerInputHandler.Get_AttackPressed)
             {
                 _stateMachine.ChangeState(States.Attack);
+            }
+            else if (_playerInputHandler.Get_InteractPressed)
+            {
+                _playerInteractController.TryInteract();
             }
         }
     }
