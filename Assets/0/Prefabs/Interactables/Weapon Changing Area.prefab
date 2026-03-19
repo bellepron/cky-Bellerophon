@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6632767073184713812}
   - component: {fileID: 4646416779899884803}
   - component: {fileID: 3674407643821822959}
+  - component: {fileID: 8608435362419715476}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -90,6 +91,22 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &8608435362419715476
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133474513062339004}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &8898732220254862669
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f962a133ae645d7a3f24d9f52e601a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Interactables.WeaponChangingArea
-  weaponType: 0
+  <Weapon>k__BackingField: {fileID: 0}
 --- !u!65 &1770828921479244700
 BoxCollider:
   m_ObjectHideFlags: 0

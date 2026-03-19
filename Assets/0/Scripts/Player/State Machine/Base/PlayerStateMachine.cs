@@ -16,7 +16,7 @@ namespace Bellepron.Player
             SwitchState(_movementState);
         }
 
-        public void ChangeState(States newState)
+        public void ChangeState(State newState)
         {
             if (_playerFacade.State == newState) return;
 
@@ -25,21 +25,16 @@ namespace Bellepron.Player
             SwitchState(EnumToState(newState));
         }
 
-        PlayerBaseState EnumToState(States newState)
+        PlayerBaseState EnumToState(State newState)
         {
             return newState switch
             {
-                States.Movement => _movementState,
-                States.Attack => _attackState,
-                States.Dash => _dashState,
-                States.DashAttack => _dashAttackState,
+                State.Movement => _movementState,
+                State.Attack => _attackState,
+                State.Dash => _dashState,
+                State.DashAttack => _dashAttackState,
                 _ => _movementState
             };
-        }
-
-        protected override void FixedTick()
-        {
-            base.FixedTick();
         }
     }
 }

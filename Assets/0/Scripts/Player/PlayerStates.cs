@@ -2,5 +2,5 @@ using UnityEngine;
 
 namespace Bellepron.Player
 {
-    public enum States { Movement, Attack, Dash, DashAttack }
+    public enum State { Movement, Attack, Dash, DashAttack }
 }

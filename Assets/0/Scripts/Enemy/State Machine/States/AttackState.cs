@@ -1,16 +1,30 @@
 using UnityEngine;
+using Zenject;
 
-public class AttackState : MonoBehaviour
+namespace Bellepron.Enemy
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class AttackState : EnemyBaseState
     {
-        
-    }
+        [Inject] readonly EnemyStateMachine _stateMachine;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public override void Enter()
+        {
+
+        }
+
+        public override void Exit()
+        {
+
+        }
+
+        public override void FixedTick(float fixedDeltaTime)
+        {
+
+        }
+
+        public override void Tick(float deltaTime)
+        {
+
+        }
     }
 }

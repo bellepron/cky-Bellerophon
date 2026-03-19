@@ -27,7 +27,7 @@ namespace Bellepron.Player
         {
             if (_playerInputHandler.Get_DashPressed && _playerDashController.CanDash())
             {
-                _stateMachine.ChangeState(States.Dash);
+                _stateMachine.ChangeState(State.Dash);
             }
 
             if (Time.time <= animStartedTime + _playerAnimatorController.AttackFadeDuration) return;
@@ -56,7 +56,7 @@ namespace Bellepron.Player
                 }
                 else
                 {
-                    _stateMachine.ChangeState(States.Movement);
+                    _stateMachine.ChangeState(State.Movement);
                 }
             }
         }

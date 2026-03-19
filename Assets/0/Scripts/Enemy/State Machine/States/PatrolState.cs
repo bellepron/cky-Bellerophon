@@ -1,16 +1,29 @@
 using UnityEngine;
+using Zenject;
 
-public class PatrolState : MonoBehaviour
+namespace Bellepron.Enemy
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class PatrolState : EnemyBaseState
     {
-        
-    }
+        [Inject] readonly EnemyStateMachine _stateMachine;
+        public override void Enter()
+        {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        }
+
+        public override void Exit()
+        {
+
+        }
+
+        public override void FixedTick(float fixedDeltaTime)
+        {
+
+        }
+
+        public override void Tick(float deltaTime)
+        {
+
+        }
     }
 }

@@ -36,8 +36,8 @@ namespace Bellepron.Weapon
         {
             if (PlayerFacade == null) return;
 
-            bool isDashAttacking = PlayerFacade.State == Bellepron.Player.States.DashAttack;
-            bool isAttacking = PlayerFacade.State == Bellepron.Player.States.Attack
+            bool isDashAttacking = PlayerFacade.State == Bellepron.Player.State.DashAttack;
+            bool isAttacking = PlayerFacade.State == Bellepron.Player.State.Attack
                  || isDashAttacking;
 
             if (hitActive && !isAttacking)

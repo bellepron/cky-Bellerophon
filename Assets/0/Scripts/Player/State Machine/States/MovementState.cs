@@ -30,11 +30,11 @@ namespace Bellepron.Player
         {
             if (_playerInputHandler.Get_DashPressed)
             {
-                _stateMachine.ChangeState(States.Dash);
+                _stateMachine.ChangeState(State.Dash);
             }
             else if (_playerInputHandler.Get_AttackPressed)
             {
-                _stateMachine.ChangeState(States.Attack);
+                _stateMachine.ChangeState(State.Attack);
             }
             else if (_playerInputHandler.Get_InteractPressed)
             {

@@ -7,10 +7,9 @@ namespace Bellepron.Player
 {
     public class PlayerFacade : MonoBehaviour
     {
-        [field: SerializeField] public States State { get; set; }
+        [field: SerializeField] public State State { get; set; }
         [field: SerializeField] public WeaponAbstract Weapon { get; private set; }
 
-        [Inject] readonly PlayerInputHandler _playerInputHandler;
         [Inject] readonly PlayerAnimatorController _playerAnimatorController;
         [Inject] readonly PlayerAttackController.Settings _playerAttackControllerSettings;
         [Inject] readonly WeaponHolder _weaponHolder;
