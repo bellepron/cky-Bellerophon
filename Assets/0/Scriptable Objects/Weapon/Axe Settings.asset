@@ -17,6 +17,6 @@ MonoBehaviour:
   <WeaponHoldType>k__BackingField: 0
   <WeaponStance>k__BackingField: 0
   <AnimatorController>k__BackingField: {fileID: 9100000, guid: 1eaa295e0a5e340a796b393359cba447, type: 2}
-  <Damage>k__BackingField: 0a0000000f00000019000000
+  <Damage>k__BackingField: 190000002300000032000000
   <Knockback>k__BackingField: 404b4c00404b4c0080c3c901
   <DashKnockback>k__BackingField: 6000000
