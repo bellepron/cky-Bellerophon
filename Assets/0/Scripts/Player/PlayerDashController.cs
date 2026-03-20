@@ -9,18 +9,19 @@ namespace Bellepron.Player
 {
     public class PlayerDashController : ITickable, IInitializable
     {
-        [Inject] readonly SignalBus _signalBus;
         [Inject] readonly CoroutineRunner _coroutineRunner;
+        [Inject] readonly TimeScaleManager _timeScaleManager;
         [Inject] readonly Settings _settings;
-        [Inject] readonly PlayerStateMachine _playerStateMachine;
-        [Inject] readonly PlayerFacade _playerFacade;
-        [Inject] readonly PlayerGhostTrailController _playerGhostTrailController;
-        [Inject] readonly PlayerAnimatorController _playerAnimatorController;
+        [Inject] readonly PlayerFacade _facade;
+        [Inject] readonly PlayerInputHandler _inputHandler;
+        [Inject] readonly PlayerRotationController _rotationController;
+        [Inject] readonly PlayerGhostTrailController _ghostTrailController;
+        [Inject] readonly PlayerAnimatorController _animatorController;
         [Inject] readonly CinemachineImpulseSource _cinemachineImpulseSource;
         [Inject] readonly PlayerStatus _playerStatus;
-        [Inject] readonly PlayerDashEffect.Factory _playerDashEffectFactory;
-        [Inject] readonly PlayerDamageHandler _playerDamageHandler;
-        [Inject] readonly TimeScaleManager _timeScaleManager;
+        [Inject] readonly PlayerDashEffect.Factory _dashEffectFactory;
+        [Inject] readonly PlayerDamageHandler _damageHandler;
+        [Inject] readonly SignalBus _signalBus;
 
         int _dashCharges;
         float _rechargeTimer;
@@ -100,22 +101,23 @@ namespace Bellepron.Player
 
         void StartDash()
         {
-            _playerDamageHandler.ClearHitRegistry();
+            _damageHandler.ClearHitRegistry();
 
-            var dashDir = _playerFacade.Forward;
+            var dashDir = _inputHandler.Get_MovementVectorSnapped.magnitude > 0.1f ? _inputHandler.Get_MovementVectorSnapped : _facade.Forward;
+            _rotationController.Rotate(dashDir);
 
             _playerStatus.SetInvulnerable(true);
             _cinemachineImpulseSource.GenerateImpulse(_settings.dashCameraImpulseForce);
-            _playerGhostTrailController.StartSpawnGhostTrail();
-            _playerAnimatorController.AnimateDash();
-            _playerDashEffectFactory.Create(_playerFacade.Position, dashDir);
+            _ghostTrailController.StartSpawnGhostTrail();
+            _animatorController.AnimateDash();
+            _dashEffectFactory.Create(_facade.Position, dashDir);
 
             _dashCharges--;
             _rechargeTimer = _settings.dashRechargeTime;
 
             isDashing = true;
 
-            _dashStartPos = _playerFacade.Position;
+            _dashStartPos = _facade.Position;
 
             // --- 1. hedefi hesapla ---
             Vector3 firstTarget = ComputeDashTargetSafe(_dashStartPos, dashDir, _settings.dashDistance);
@@ -162,7 +164,7 @@ namespace Bellepron.Player
             if (firstDuration > 0f)
             {
                 float segTimer = 0f;
-                Vector3 segStart = _playerFacade.Position;
+                Vector3 segStart = _facade.Position;
 
                 while (segTimer < firstDuration)
                 {
@@ -173,15 +175,15 @@ namespace Bellepron.Player
                     Vector3 nextPos = Vector3.Lerp(segStart, firstTarget, curvedT);
 
                     // ResolveWallsSphere(ref nextPos, _lastFramePos);
-                    _playerDamageHandler.DamageEnemiesBetween(_lastFramePos, nextPos, dashDir, _settings.dashDamage, _settings.dashKnockback, _settings.enemyLayer);
+                    _damageHandler.DamageEnemiesBetween(_lastFramePos, nextPos, dashDir, _settings.dashDamage, _settings.dashKnockback, _settings.enemyLayer);
 
-                    _playerFacade.MovePosition(nextPos);
+                    _facade.MovePosition(nextPos);
                     _lastFramePos = nextPos;
 
                     yield return null;
                 }
 
-                _playerFacade.MovePosition(firstTarget);
+                _facade.MovePosition(firstTarget);
                 _lastFramePos = firstTarget;
             }
 
@@ -205,15 +207,15 @@ namespace Bellepron.Player
                         Vector3 nextPos = Vector3.Lerp(segStart, secondTarget, curvedT);
 
                         // ResolveWallsSphere(ref nextPos, _lastFramePos);
-                        _playerDamageHandler.DamageEnemiesBetween(_lastFramePos, nextPos, dashDir, _settings.dashDamage, _settings.dashKnockback, _settings.enemyLayer);
+                        _damageHandler.DamageEnemiesBetween(_lastFramePos, nextPos, dashDir, _settings.dashDamage, _settings.dashKnockback, _settings.enemyLayer);
 
-                        _playerFacade.MovePosition(nextPos);
+                        _facade.MovePosition(nextPos);
                         _lastFramePos = nextPos;
 
                         yield return null;
                     }
 
-                    _playerFacade.MovePosition(secondTarget);
+                    _facade.MovePosition(secondTarget);
                     _lastFramePos = secondTarget;
                 }
             }
@@ -224,7 +226,7 @@ namespace Bellepron.Player
         void StopDash()
         {
             isDashing = false;
-            _playerGhostTrailController.StopSpawnGhostTrail();
+            _ghostTrailController.StopSpawnGhostTrail();
             _playerStatus.SetInvulnerable(false);
         }
 
@@ -236,7 +238,7 @@ namespace Bellepron.Player
             if (dist <= 0f) return;
 
             dir /= dist;
-            float radius = _playerFacade.CapsuleRadius;
+            float radius = _facade.CapsuleRadius;
 
             if (Physics.SphereCast(fromPos, radius, dir, out RaycastHit hit, dist, _settings.wallLayer | _settings.obstacleLayer))
             {
@@ -246,7 +248,7 @@ namespace Bellepron.Player
 
         Vector3 ComputeDashTargetSafe(Vector3 start, Vector3 dir, float maxDistance)
         {
-            var radius = _playerFacade.CapsuleRadius * 0.95f;
+            var radius = _facade.CapsuleRadius * 0.95f;
 
             Vector3 origin = start;
             Vector3 targetPoint = start + dir * maxDistance;
