@@ -3114,13 +3114,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::cky.TODO
   toDos:
-  - Right Click Throw Projectile
+  - Right Click - Throw Projectile
   - Refactor IDamageable Add Knockback
   - Enemy NavMesh Logic
   - Enemy Models
   - Enemy Animations
   - Weapon Changing Areas
   - Weapon Models & Trails
+  - Q - Aoe Damae
 --- !u!4 &2098885111
 Transform:
   m_ObjectHideFlags: 0
