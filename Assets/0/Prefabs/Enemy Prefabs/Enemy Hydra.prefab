@@ -47,6 +47,11 @@ MonoBehaviour:
   enemyFacade: {fileID: 6092782210169901939}
   enemyType: 0
   _healthBarController: {fileID: 8411682379623797294}
+  animator: {fileID: 0}
+  capsuleCollider: {fileID: 5316857880294032758}
+  rb: {fileID: 3459020278292362583}
+  skinnedMeshRenderer: {fileID: 0}
+  navMeshAgent: {fileID: 8205687848307203183}
 --- !u!1 &6476445379522924354
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
-  _scriptableObjectInstallers: []
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: cf44bcfc298444fac8806053c7dffc5c, type: 2}
   _monoInstallers:
   - {fileID: 142882302059767970}
   _installerPrefabs: []
@@ -118,11 +124,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Enemy.EnemyFacade
   <EnemyType>k__BackingField: 2
   <State>k__BackingField: 0
-  animator: {fileID: 0}
-  capsuleCollider: {fileID: 5316857880294032758}
-  rb: {fileID: 3459020278292362583}
-  skinnedMeshRenderer: {fileID: 0}
-  navMeshAgent: {fileID: 8205687848307203183}
 --- !u!136 &5316857880294032758
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -183,7 +184,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 99999

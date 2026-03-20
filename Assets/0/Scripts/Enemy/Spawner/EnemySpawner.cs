@@ -18,10 +18,6 @@ namespace Bellepron.Spawners
             Spawn(EnemyType.Satyr, new Vector3(-6, 0, 0));
             Spawn(EnemyType.Minotaur, new Vector3(-7, 0, 0));
             Spawn(EnemyType.Hydra, new Vector3(-8, 0, 0));
-
-            // Spawn(EnemyTypes.Satyr, new Vector3(-2.0f, 0, -0.5f));
-            // Spawn(EnemyTypes.Satyr, new Vector3(-3.25f, 0, -0.5f));
-            // Spawn(EnemyTypes.Satyr, new Vector3(-1.0f, 0, -4.0f));
         }
 
         // API

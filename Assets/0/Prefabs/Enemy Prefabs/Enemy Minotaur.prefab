@@ -51,7 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
-  _scriptableObjectInstallers: []
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: ce757a23550dc4d239f2d4ea3ce2adac, type: 2}
   _monoInstallers:
   - {fileID: 7421822536160902674}
   _installerPrefabs: []
@@ -71,11 +72,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Enemy.MinotaurEnemyFacade
   <EnemyType>k__BackingField: 1
   <State>k__BackingField: 0
-  animator: {fileID: 0}
-  capsuleCollider: {fileID: 5316857880294032758}
-  rb: {fileID: 3459020278292362583}
-  skinnedMeshRenderer: {fileID: 0}
-  navMeshAgent: {fileID: 833477948150899242}
 --- !u!136 &5316857880294032758
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -136,7 +132,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 99999
@@ -285,6 +281,11 @@ MonoBehaviour:
   enemyFacade: {fileID: 6408708744647031811}
   enemyType: 0
   _healthBarController: {fileID: 8018862808093492779}
+  animator: {fileID: 0}
+  capsuleCollider: {fileID: 5316857880294032758}
+  rb: {fileID: 3459020278292362583}
+  skinnedMeshRenderer: {fileID: 0}
+  navMeshAgent: {fileID: 833477948150899242}
 --- !u!1001 &1369981991995930252
 PrefabInstance:
   m_ObjectHideFlags: 0

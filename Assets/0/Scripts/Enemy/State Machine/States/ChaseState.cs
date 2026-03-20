@@ -1,38 +1,35 @@
-using Bellepron.Player;
-using UnityEngine;
 using Zenject;
 
 namespace Bellepron.Enemy
 {
     public class ChaseState : EnemyBaseState
     {
-        [Inject] readonly EnemyStateMachine _stateMachine;
         [Inject] readonly EnemyFacade _facade;
-        [Inject] readonly PlayerHolder _playerHolder;
+        [Inject] readonly EnemyStateMachine _stateMachine;
+        [Inject] readonly EnemyMovementController _movementController;
+        [Inject] readonly EnemyDetectionController _detectionController;
+        [Inject] readonly EnemyAttackController _attackController;
 
-        Transform _playerTransform;
-
-        public override void Enter()
-        {
-            _playerTransform = _playerHolder.PlayerFacade.transform;
-        }
-
-        public override void Exit()
-        {
-
-        }
+        public override void Enter() { }
+        public override void Exit() { }
 
         public override void FixedTick(float fixedDeltaTime)
         {
-
+            if (!_detectionController.HasTarget)
+                _stateMachine.ChangeState(State.Idle);
         }
 
         public override void Tick(float deltaTime)
         {
-            if (_facade.IsDestinationReachable(_playerTransform.position))
-            {
-                _facade.MoveTo(_playerTransform.position);
-            }
+            var target = _detectionController.CurrentTarget;
+            if (target == null) return;
+
+            if (!_movementController.IsDestinationReachable(target.position)) return;
+
+            if (_attackController.IsInRange(target.position))
+                _stateMachine.ChangeState(State.Attack);
+            else
+                _movementController.MoveTo(target.position);
         }
     }
 }
