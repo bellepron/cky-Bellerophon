@@ -129,12 +129,15 @@ namespace Bellepron.Player
             float secondSegmentDistance = 0f;
 
             float remainingDistance = _settings.dashDistance - firstSegmentDistance;
-            if (remainingDistance > 0.05f && _projectedDir.sqrMagnitude > 0.001f)
+            if (remainingDistance > 0.05f && _projectedDir.sqrMagnitude > 0.01f)
             {
                 Vector3 slideDir = _projectedDir.normalized;
-                secondTarget = ComputeDashTargetSafe(firstTarget, slideDir, remainingDistance);
-                secondSegmentDistance = _totalDeltaDistance;
-                hasSecondSegment = secondSegmentDistance > 0.05f;
+                if (Vector3.Dot(slideDir, dashDir) > -0.5f) // Slide yönü orijinal dash yönüyle çok ters açıdaysa iptal et
+                {
+                    secondTarget = ComputeDashTargetSafe(firstTarget, slideDir, remainingDistance);
+                    secondSegmentDistance = _totalDeltaDistance;
+                    hasSecondSegment = secondSegmentDistance > 0.05f;
+                }
             }
 
             _lastFramePos = _dashStartPos;
