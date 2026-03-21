@@ -9,6 +9,7 @@ namespace Bellepron.Enemy
         [Inject] readonly EnemyFacade _facade;
         [Inject] readonly EnemyMovementController _movementController;
         [Inject] readonly EnemyAttackController _attackController;
+        [Inject] readonly EnemyDetectionController _detectionController;
 
         public override void Enter()
         {
@@ -30,7 +31,14 @@ namespace Bellepron.Enemy
         {
             if (!_attackController.IsAttacking)
             {
-                _stateMachine.ChangeState(State.Idle);
+                if (_detectionController.HasTarget)
+                {
+                    _stateMachine.ChangeState(State.Chase);
+                }
+                else
+                {
+                    _stateMachine.ChangeState(State.Idle);
+                }
             }
         }
     }
