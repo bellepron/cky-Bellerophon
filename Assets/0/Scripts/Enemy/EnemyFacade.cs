@@ -1,4 +1,5 @@
 using UnityEngine.AI;
+using Bellepron.Cast;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +9,7 @@ namespace Bellepron.Enemy
     {
         [field: SerializeField] public EnemyType EnemyType { get; private set; }
         [field: SerializeField] public State State { get; set; }
+        [Inject(Id = "EnemiesParent")] private Transform _enemiesParent;
         [Inject] readonly EnemyHealthController _enemyHealthController;
         // [Inject] readonly Animator _animator;
         [Inject] readonly CapsuleCollider _capsuleCollider;
@@ -15,6 +17,8 @@ namespace Bellepron.Enemy
         // [Inject] readonly SkinnedMeshRenderer _skinnedMeshRenderer;
         [Inject] readonly NavMeshAgent _navMeshAgent;
 
+        public Transform Transform => transform;
+        public bool IsAlive => _enemyHealthController.IsAlive;
         public Vector3 Forward => Rotation * Vector3.forward;
         public Vector3 Position => _rb.position;
         public Quaternion Rotation => _rb.rotation;
@@ -22,9 +26,9 @@ namespace Bellepron.Enemy
 
         IMemoryPool _pool;
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damage, GameObject instigator)
         {
-            _enemyHealthController.ChangeHealth(-damage);
+            _enemyHealthController.ChangeHealth(-damage, instigator);
         }
 
         public void OnSpawned(Vector3 position, IMemoryPool pool)
@@ -49,6 +53,7 @@ namespace Bellepron.Enemy
         public void Despawn()
         {
             _pool?.Despawn(this);
+            transform.parent = _enemiesParent;
         }
 
         // Inner Factory Zenject SubContainer pattern

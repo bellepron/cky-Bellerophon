@@ -1,4 +1,5 @@
 using Bellepron.Weapon;
+using Bellepron.Cast;
 using UnityEngine;
 using Zenject;
 
@@ -7,6 +8,7 @@ namespace Bellepron.Player
     public class PlayerAnimationEventController : MonoBehaviour
     {
         [Inject] readonly PlayerFacade _facade;
+        [Inject] readonly PlayerAttackController _attackController;
         [Inject] readonly PlayerAttackController.Settings _attackControllerSettings;
         [Inject] readonly PlayerDamageHandler _damageHandler;
 
@@ -44,7 +46,7 @@ namespace Bellepron.Player
 
         public void Cast()
         {
-
+            _attackController.Cast();
         }
 
         public void Shoot()

@@ -6,7 +6,7 @@ namespace Bellepron.Player
 {
     public class PlayerDamageHandler
     {
-        [Inject] readonly PlayerFacade _playerFacade;
+        [Inject] readonly PlayerFacade _facade;
         [Inject] readonly TimeScaleManager _timeScaleManager;
         HashSet<Collider> _hitRegistry = new HashSet<Collider>();
 
@@ -24,7 +24,7 @@ namespace Bellepron.Player
             if (dist <= 0f) return;
 
             dir /= dist;
-            float radius = _playerFacade.CapsuleRadius;
+            float radius = _facade.CapsuleRadius;
 
             RaycastHit[] hits = Physics.SphereCastAll(from, radius, dir, dist, hitMask);
 
@@ -34,7 +34,7 @@ namespace Bellepron.Player
                 _hitRegistry.Add(hit.collider);
 
                 if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
-                    damageable.TakeDamage(damage);
+                    damageable.TakeDamage(damage, _facade.gameObject);
 
                 if (hit.collider.attachedRigidbody != null)
                     hit.collider.attachedRigidbody.AddForce(forceDir * knockback, ForceMode.Impulse);
@@ -50,7 +50,7 @@ namespace Bellepron.Player
             foreach (var col in hits)
             {
                 if (col.TryGetComponent<IDamageable>(out var damageable))
-                    damageable.TakeDamage(damage);
+                    damageable.TakeDamage(damage, _facade.gameObject);
                 if (col.attachedRigidbody != null)
                 {
                     Vector3 forceDir = (col.transform.position - center).normalized;

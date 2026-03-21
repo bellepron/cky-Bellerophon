@@ -70,7 +70,7 @@ namespace Bellepron.Weapon
 
                     // Damage uygula
                     hitEnemies.Add(iDamageable);
-                    iDamageable.TakeDamage(Settings.Damage[attackStep - 1]);
+                    iDamageable.TakeDamage(Settings.Damage[attackStep - 1], PlayerFacade.gameObject);
                     var dir = (hit.transform.position - PlayerFacade.Position).normalized;
                     if (hit != null && hit.attachedRigidbody != null)
                     {

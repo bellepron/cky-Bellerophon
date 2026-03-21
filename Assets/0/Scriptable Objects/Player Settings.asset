@@ -44,6 +44,7 @@ MonoBehaviour:
     enemyLayer:
       serializedVersion: 2
       m_Bits: 512
+    defaultCastProjectilePrefab: {fileID: 2229275543322186013, guid: a2fdd6374b1694334bfe9e7382b5e510, type: 3}
   <PlayerDashControllerSettings>k__BackingField:
     playerDashEffectPrefab: {fileID: 6481795459346029894, guid: 9ae8d1130da3845f1a8a402555bea7e2, type: 3}
     dashSpeed: 30

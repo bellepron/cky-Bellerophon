@@ -1,6 +1,7 @@
 using Bellepron.Spawners;
 using Bellepron.Player;
 using Bellepron.Enemy;
+using Bellepron.Cast;
 using UnityEngine;
 using Zenject;
 using System;
@@ -67,9 +68,13 @@ namespace Bellepron
 
             #endregion
 
-            #region Projectiles
+            #region Cast Projectile
 
-
+            Container.BindFactory<IDamageable, LayerMask, GameObject, CastProjectile, CastProjectile.Factory>()
+                   .FromPoolableMemoryPool<IDamageable, LayerMask, GameObject, CastProjectile, DefaultCastProjectilePool>(poolBinder => poolBinder
+                       .WithInitialSize(1)
+                       .FromComponentInNewPrefab(_playerSettings.PlayerAttackControllerSettings.defaultCastProjectilePrefab)
+                       .UnderTransformGroup("Projectiles"));
 
             #endregion
 
@@ -113,16 +118,13 @@ namespace Bellepron
         }
 
         #endregion
-    }
 
-    public class EnemyFacadePool : MonoPoolableMemoryPool<Vector3, IMemoryPool, EnemyFacade>
-    {
-        [Inject(Id = "EnemiesParent")] private Transform _enemiesParent;
+        #region Cast Projectile Pools
 
-        protected override void OnCreated(EnemyFacade item)
+        class DefaultCastProjectilePool : MonoPoolableMemoryPool<IDamageable, LayerMask, GameObject, IMemoryPool, CastProjectile>
         {
-            base.OnCreated(item);
-            item.transform.SetParent(_enemiesParent);
         }
+
+        #endregion
     }
 }

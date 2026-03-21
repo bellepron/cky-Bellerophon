@@ -2,5 +2,7 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void TakeDamage(int damage);
+    Transform Transform { get; }
+    bool IsAlive { get; }
+    void TakeDamage(int amount, GameObject instigator);
 }

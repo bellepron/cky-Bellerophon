@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Bellepron.Player
 {
-    [CreateAssetMenu(menuName = "Bellepron/Player Settings")]
+    [CreateAssetMenu(menuName = "Bellepron/Player/Player Settings")]
     public class PlayerSettings : ScriptableObjectInstaller
     {
         [field: SerializeField] public GameObject PlayerPrefab { get; private set; }

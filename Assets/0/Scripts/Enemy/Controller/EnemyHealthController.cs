@@ -1,4 +1,5 @@
 using Bellepron.UI;
+using UnityEngine;
 using Zenject;
 
 namespace Bellepron.Enemy
@@ -8,6 +9,8 @@ namespace Bellepron.Enemy
         [Inject] EnemyFacade _enemyFacade;
         [Inject] HealthBarController _healthBarController;
 
+        public bool IsAlive => _currentHealth > 0;
+
         int maxHealth = 100;
         int _currentHealth = 100;
 
@@ -16,7 +19,7 @@ namespace Bellepron.Enemy
             _healthBarController.Initialize(_currentHealth, maxHealth);
         }
 
-        public void ChangeHealth(int delta)
+        public void ChangeHealth(int delta, GameObject instigator)
         {
             var newHealth = _currentHealth + delta;
 

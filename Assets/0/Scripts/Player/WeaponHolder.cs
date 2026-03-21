@@ -8,6 +8,7 @@ namespace Bellepron
     {
         public Transform rightHand;
         public Transform leftHand;
+        public Transform leftHandCastTransform;
 
         public List<Transform> GetHoldPoints(WeaponHoldType holdType, WeaponStance stance)
         {

@@ -12,7 +12,7 @@ namespace Bellepron.Player
 
         public override void Enter()
         {
-            _attackController.Cast();
+            _attackController.TriggerCast();
         }
 
         public override void Exit()
@@ -27,7 +27,7 @@ namespace Bellepron.Player
         {
             if (_inputHandler.Get_DashPressed)
             {
-                _stateMachine.ChangeState(State.Dash); // TODO: Basýlacak ama bozmayacak.
+                _stateMachine.ChangeState(State.Dash); // TODO: Basï¿½lacak ama bozmayacak.
             }
             else if (_inputHandler.Get_SpecialPressed)
             {
