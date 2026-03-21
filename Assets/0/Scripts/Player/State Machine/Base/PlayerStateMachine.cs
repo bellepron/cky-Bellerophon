@@ -7,8 +7,10 @@ namespace Bellepron.Player
     {
         [Inject] readonly PlayerFacade _playerFacade;
         [Inject] readonly MovementState _movementState;
-        [Inject] readonly AttackState _attackState;
         [Inject] readonly DashState _dashState;
+        [Inject] readonly AttackState _attackState;
+        [Inject] readonly SpecialState _specialState;
+        [Inject] readonly CastState _castState;
         [Inject] readonly DashAttackState _dashAttackState;
 
         public override void Initialize()
@@ -30,8 +32,10 @@ namespace Bellepron.Player
             return newState switch
             {
                 State.Movement => _movementState,
-                State.Attack => _attackState,
                 State.Dash => _dashState,
+                State.Attack => _attackState,
+                State.Special => _specialState,
+                State.Cast => _castState,
                 State.DashAttack => _dashAttackState,
                 _ => _movementState
             };

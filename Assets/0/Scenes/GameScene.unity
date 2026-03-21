@@ -254,6 +254,18 @@ PrefabInstance:
       propertyPath: <Weapon>k__BackingField
       value: 
       objectReference: {fileID: 620241798}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9914449
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0000003874302
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000000048428774
+      objectReference: {fileID: 0}
     - target: {fileID: 8898732220254862669, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
       propertyPath: m_Name
       value: Weapon Changing Area
@@ -842,6 +854,18 @@ PrefabInstance:
       propertyPath: <Weapon>k__BackingField
       value: 
       objectReference: {fileID: 128313100}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9914449
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0000003874302
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000000048428774
+      objectReference: {fileID: 0}
     - target: {fileID: 8898732220254862669, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
       propertyPath: m_Name
       value: Weapon Changing Area
@@ -3122,6 +3146,7 @@ MonoBehaviour:
   - Weapon Changing Areas
   - Weapon Models & Trails
   - Q - Aoe Damae
+  - Two Handed Weeapon Left Hand IK
 --- !u!4 &2098885111
 Transform:
   m_ObjectHideFlags: 0
@@ -3230,6 +3255,18 @@ PrefabInstance:
       propertyPath: <Weapon>k__BackingField
       value: 
       objectReference: {fileID: 1134365294}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9914449
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0000003874302
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368413443691567991, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000000048428774
+      objectReference: {fileID: 0}
     - target: {fileID: 8898732220254862669, guid: 505398211ab014e22b508c6a003b5aa3, type: 3}
       propertyPath: m_Name
       value: Weapon Changing Area

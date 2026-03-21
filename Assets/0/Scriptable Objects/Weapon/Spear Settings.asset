@@ -16,7 +16,10 @@ MonoBehaviour:
   <WeaponType>k__BackingField: 1
   <WeaponHoldType>k__BackingField: 0
   <WeaponStance>k__BackingField: 0
-  <AnimatorController>k__BackingField: {fileID: 9100000, guid: 98ea0646cf3674fc780ba60620f392bb, type: 2}
+  <AnimatorController>k__BackingField: {fileID: 9100000, guid: bd6c3810aa1eb1249b9a64dea723d629, type: 2}
   <Damage>k__BackingField: 0a0000000f00000019000000
   <Knockback>k__BackingField: 404b4c00404b4c0080c3c901
   <DashKnockback>k__BackingField: 6000000
+  <SpecialRadius>k__BackingField: 5
+  <SpecialDamage>k__BackingField: 35
+  <SpecialKnockback>k__BackingField: 45000000

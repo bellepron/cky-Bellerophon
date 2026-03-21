@@ -5,12 +5,12 @@ namespace Bellepron.Player
     public class DashState : PlayerBaseState
     {
         [Inject] readonly PlayerStateMachine _stateMachine;
-        [Inject] readonly PlayerInputHandler _playerInputHandler;
-        [Inject] readonly PlayerDashController _playerDashController;
+        [Inject] readonly PlayerInputHandler _inputHandler;
+        [Inject] readonly PlayerDashController _dashController;
 
         public override void Enter()
         {
-            _playerDashController.TryDash();
+            _dashController.TryDash();
         }
 
         public override void Exit()
@@ -25,12 +25,12 @@ namespace Bellepron.Player
 
         public override void Tick(float deltaTime)
         {
-            if (_playerInputHandler.Get_AttackPressed)
+            if (_inputHandler.Get_AttackPressed)
             {
                 _stateMachine.ChangeState(State.DashAttack);
             }
 
-            if (!_playerDashController.isDashing)
+            if (!_dashController.isDashing)
             {
                 _stateMachine.ChangeState(State.Movement);
             }

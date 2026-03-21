@@ -29,8 +29,10 @@ public class PlayerInputHandler : IInitializable, IDisposable
     }
 
     public bool Get_InteractPressed => inputActions?.Player.Interact.WasPerformedThisFrame() ?? false;
-    public bool Get_AttackPressed => inputActions?.Player.Attack.WasPerformedThisFrame() ?? false;
     public bool Get_DashPressed => inputActions?.Player.Dash.WasPerformedThisFrame() ?? false;
+    public bool Get_AttackPressed => inputActions?.Player.Attack.WasPerformedThisFrame() ?? false;
+    public bool Get_SpecialPressed => inputActions?.Player.Special.WasPerformedThisFrame() ?? false;
+    public bool Get_CastPressed => inputActions?.Player.Cast.WasPerformedThisFrame() ?? false;
 
     public void Initialize()
     {

@@ -6,10 +6,10 @@ namespace Bellepron.Player
     public class AttackState : PlayerBaseState
     {
         [Inject] protected readonly PlayerStateMachine _stateMachine;
-        [Inject] protected readonly PlayerInputHandler _playerInputHandler;
-        [Inject] protected readonly PlayerAnimatorController _playerAnimatorController;
-        [Inject] protected readonly PlayerAttackController _playerAttackController;
-        [Inject] protected readonly PlayerDashController _playerDashController;
+        [Inject] protected readonly PlayerInputHandler _inputHandler;
+        [Inject] protected readonly PlayerAnimatorController _animatorController;
+        [Inject] protected readonly PlayerAttackController _attackController;
+        [Inject] protected readonly PlayerDashController _dashController;
 
         protected float animStartedTime;
         int _attackStep = 1;
@@ -20,35 +20,34 @@ namespace Bellepron.Player
             animStartedTime = Time.time;
             _attackStep = 1;
             _comboQueued = false;
-            _playerAttackController.Attack(_attackStep);
+            _attackController.Attack(_attackStep);
         }
 
         public override void Tick(float deltaTime)
         {
-            if (_playerInputHandler.Get_DashPressed && _playerDashController.CanDash())
+            if (_inputHandler.Get_DashPressed && _dashController.CanDash())
             {
                 _stateMachine.ChangeState(State.Dash);
             }
 
-            if (Time.time <= animStartedTime + _playerAnimatorController.AttackFadeDuration) return;
+            if (Time.time <= animStartedTime + _animatorController.AttackFadeDuration) return;
 
-            if (!_playerAnimatorController.IsPlayingAttack())
-                return;
+            if (!_animatorController.IsPlayingAttack()) return;
 
-            if (_playerInputHandler.Get_AttackPressed)
+            if (_inputHandler.Get_AttackPressed)
             {
                 if (_attackStep < 3)
                     _comboQueued = true;
             }
 
-            if (_playerAnimatorController.GetCurrentAttackNormalizedTime() >= 1f)
+            if (_animatorController.GetNormalizedTime() >= 1f)
             {
                 if (_comboQueued)
                 {
                     _attackStep++;
                     _comboQueued = false;
 
-                    _playerAttackController.Attack(_attackStep);
+                    _attackController.Attack(_attackStep);
 
                     animStartedTime = Time.time;
 

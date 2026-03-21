@@ -6,11 +6,15 @@ namespace Bellepron.Player
 {
     public class PlayerAnimationEventController : MonoBehaviour
     {
-        [Inject] readonly PlayerFacade _playerFacade;
+        [Inject] readonly PlayerFacade _facade;
+        [Inject] readonly PlayerAttackController.Settings _attackControllerSettings;
+        [Inject] readonly PlayerDamageHandler _damageHandler;
 
         public void BeginHit()
         {
-            if (_playerFacade.Weapon is MeleeWeapon melee)
+            if (_facade.Weapon == null) return;
+
+            if (_facade.Weapon is MeleeWeapon melee)
             {
                 melee.BeginHit();
             }
@@ -18,15 +22,36 @@ namespace Bellepron.Player
 
         public void EndHit()
         {
-            if (_playerFacade.Weapon is MeleeWeapon melee)
+            if (_facade.Weapon == null) return;
+
+            if (_facade.Weapon is MeleeWeapon melee)
             {
                 melee.EndHit();
             }
         }
 
+        public void SpecialHit()
+        {
+            if (_facade.Weapon == null) return;
+
+            if (_facade.Weapon is MeleeWeapon melee)
+            {
+                var meleeSettings = melee.Settings;
+                _damageHandler.DamageEnemiesInRadius(_facade.Position, meleeSettings.SpecialRadius, meleeSettings.SpecialDamage, meleeSettings.SpecialKnockback, _attackControllerSettings.enemyLayer);
+                melee.SpecialHit();
+            }
+        }
+
+        public void Cast()
+        {
+
+        }
+
         public void Shoot()
         {
-            if (_playerFacade.Weapon is RangedWeapon ranged)
+            if (_facade.Weapon == null) return;
+
+            if (_facade.Weapon is RangedWeapon ranged)
             {
                 ranged.Shoot();
             }

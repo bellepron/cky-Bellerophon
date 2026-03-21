@@ -10,8 +10,8 @@ namespace Bellepron.Player
         [field: SerializeField] public State State { get; set; }
         [field: SerializeField] public WeaponAbstract Weapon { get; private set; }
 
-        [Inject] readonly PlayerAnimatorController _playerAnimatorController;
-        [Inject] readonly PlayerAttackController.Settings _playerAttackControllerSettings;
+        [Inject] readonly PlayerAnimatorController _animatorController;
+        [Inject] readonly PlayerAttackController.Settings _attackControllerSettings;
         [Inject] readonly WeaponHolder _weaponHolder;
 
         [Space(10)]
@@ -45,8 +45,8 @@ namespace Bellepron.Player
             }
 
             Weapon = weapon;
-            Weapon.SetPlayerFacade(this, _playerAttackControllerSettings);
-            _playerAnimatorController.SetAnimatorController();
+            Weapon.SetPlayerFacade(this, _attackControllerSettings);
+            _animatorController.SetAnimatorController();
         }
 
         public void MovePosition(Vector3 nextPos)

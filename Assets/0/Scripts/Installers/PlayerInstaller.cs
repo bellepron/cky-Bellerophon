@@ -28,8 +28,10 @@ namespace Bellepron.Player
             Container.Bind<PlayerGhostTrailController>().AsSingle();
             Container.Bind<PlayerGhostSpawner>().AsSingle();
             Container.Bind<MovementState>().AsSingle();
-            Container.Bind<AttackState>().AsSingle();
             Container.Bind<DashState>().AsSingle();
+            Container.Bind<AttackState>().AsSingle();
+            Container.Bind<SpecialState>().AsSingle();
+            Container.Bind<CastState>().AsSingle();
             Container.Bind<DashAttackState>().AsSingle();
             Container.Bind<PlayerDamageHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerInteractController>().AsSingle();

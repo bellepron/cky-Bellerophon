@@ -43,22 +43,23 @@ namespace Bellepron.Player
             }
         }
 
-        // Dot
-        public void DamageEnemiesInRadius(Vector3 center, float radius, Vector3 forceDir, int damage, float knockback, LayerMask hitMask)
+        // Point
+        public void DamageEnemiesInRadius(Vector3 center, float radius, int damage, float knockback, LayerMask hitMask)
         {
             Collider[] hits = Physics.OverlapSphere(center, radius, hitMask);
-
             foreach (var col in hits)
             {
-                if (_hitRegistry.Contains(col)) continue;
-                _hitRegistry.Add(col);
-
                 if (col.TryGetComponent<IDamageable>(out var damageable))
                     damageable.TakeDamage(damage);
-
                 if (col.attachedRigidbody != null)
+                {
+                    Vector3 forceDir = (col.transform.position - center).normalized;
                     col.attachedRigidbody.AddForce(forceDir * knockback, ForceMode.Impulse);
+                }
+            }
 
+            if (hits.Length > 0)
+            {
                 _timeScaleManager.StartHitStop();
             }
         }

@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9492f5df027b4c2bbef313f45fe98ba, type: 3}
   m_Name: Sword Settings
   m_EditorClassIdentifier: Assembly-CSharp::cky.Weapon.MeleeWeaponSettings
+  <Id>k__BackingField: 0
+  <WeaponType>k__BackingField: 0
+  <WeaponHoldType>k__BackingField: 0
+  <WeaponStance>k__BackingField: 0
   <AnimatorController>k__BackingField: {fileID: 9100000, guid: 0da5b09dc46344ee6b3dd3bcb78e78a6, type: 2}
   <Damage>k__BackingField: 0a0000000f00000019000000
   <Knockback>k__BackingField: 404b4c00404b4c0080c3c901
+  <DashKnockback>k__BackingField: 6000000
+  <SpecialRadius>k__BackingField: 35
+  <SpecialDamage>k__BackingField: 30
+  <SpecialKnockback>k__BackingField: 35000000

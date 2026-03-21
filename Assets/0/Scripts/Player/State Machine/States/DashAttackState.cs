@@ -7,19 +7,14 @@ namespace Bellepron.Player
         public override void Enter()
         {
             animStartedTime = Time.time;
-            _playerAttackController.DashAttack();
+            _attackController.DashAttack();
         }
 
         public override void Tick(float deltaTime)
         {
-            if (_playerInputHandler.Get_DashPressed && _playerDashController.CanDash())
-            {
-                _stateMachine.ChangeState(State.Dash);
-            }
+            if (Time.time <= animStartedTime + _animatorController.DashAttackFadeDuration) return;
 
-            if (Time.time <= animStartedTime + _playerAnimatorController.DashAttackFadeDuration) return;
-
-            if (!_playerDashController.isDashing && _playerAnimatorController.GetCurrentAttackNormalizedTime() >= 1f)
+            if (!_dashController.isDashing && _animatorController.GetNormalizedTime() >= 1f)
             {
                 _stateMachine.ChangeState(State.Movement);
             }

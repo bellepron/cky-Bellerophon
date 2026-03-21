@@ -8,19 +8,19 @@ namespace Bellepron.Player
     public class PlayerAttackController
     {
         [Inject] readonly Settings _settings;
-        [Inject] readonly PlayerFacade _playerFacade;
-        [Inject] readonly PlayerAnimatorController _playerAnimatorController;
-        [Inject] readonly PlayerRotationController _playerRotationController;
+        [Inject] readonly PlayerFacade _facade;
+        [Inject] readonly PlayerAnimatorController _animatorController;
+        [Inject] readonly PlayerRotationController _rotationController;
 
         public void Attack(int attackStep)
         {
-            _playerRotationController.RotateToMouse();
-            _playerAnimatorController.PlayAttack(attackStep);
-            _playerFacade.SetVelocity(_playerFacade.Forward * _settings.attackForwardForce);
+            _rotationController.RotateToMouse();
+            _animatorController.PlayAttack(attackStep);
+            _facade.SetVelocity(_facade.Forward * _settings.attackForwardForce);
 
-            if (_playerFacade.Weapon != null)
+            if (_facade.Weapon != null)
             {
-                if (_playerFacade.Weapon is MeleeWeapon melee)
+                if (_facade.Weapon is MeleeWeapon melee)
                 {
                     melee.attackStep = attackStep;
                 }
@@ -29,8 +29,20 @@ namespace Bellepron.Player
 
         public void DashAttack()
         {
-            _playerRotationController.RotateToMouse();
-            _playerAnimatorController.PlayDashAttack();
+            _rotationController.RotateToMouse();
+            _animatorController.PlayDashAttack();
+        }
+
+        public void Special()
+        {
+            _rotationController.RotateToMouse();
+            _animatorController.PlaySpecial();
+        }
+
+        public void Cast()
+        {
+            _rotationController.RotateToMouse();
+            _animatorController.PlayCast();
         }
 
         [Serializable]

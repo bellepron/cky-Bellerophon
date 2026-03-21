@@ -22,6 +22,8 @@ MonoBehaviour:
     moveSpeed: 9
   <PlayerAnimatorControllerSettings>k__BackingField:
     attackFadeDuration: 0.05
+    specialFadeDuration: 0.05
+    castFadeDuration: 0.05
     dashAttackFadeDuration: 0.05
     movementFadeDuration: 0.1
     dashFadeDuration: 0.1

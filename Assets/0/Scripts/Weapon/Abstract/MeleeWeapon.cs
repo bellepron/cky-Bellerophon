@@ -103,6 +103,12 @@ namespace Bellepron.Weapon
             OpenTrail(false);
         }
 
+        public virtual void SpecialHit()
+        {
+            // TODO: GroundCrackDecal ekle.
+            // TODO: _specialEffectFactory.Create(_facade.Position); gerekenleri ekle.
+        }
+
         void OpenTrail(bool open)
         {
             if (open)

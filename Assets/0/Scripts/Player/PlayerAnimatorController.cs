@@ -7,12 +7,14 @@ namespace Bellepron.Player
     public class PlayerAnimatorController : IInitializable
     {
         [Inject] readonly Settings _settings;
-        [Inject] readonly PlayerFacade _playerFacade;
+        [Inject] readonly PlayerFacade _facade;
         Animator _animator;
 
         private static readonly int MoveSpeedHash = Animator.StringToHash("MoveSpeed");
         private static readonly int MovementHash = Animator.StringToHash("Movement");
         private static readonly int DashHash = Animator.StringToHash("Dash");
+        private static readonly int SpecialHash = Animator.StringToHash("Special");
+        private static readonly int CastHash = Animator.StringToHash("Cast");
 
         private static readonly string AttackBase = "Attack";
         private static readonly int AttackTagHash = Animator.StringToHash("Attack");
@@ -20,20 +22,30 @@ namespace Bellepron.Player
 
         public void Initialize()
         {
-            _animator = _playerFacade.Animator;
+            _animator = _facade.Animator;
         }
 
         public void SetAnimatorController()
         {
-            if (_playerFacade.Weapon != null && _playerFacade.Weapon.AnimatorController != null)
+            if (_facade.Weapon != null && _facade.Weapon.AnimatorController != null)
             {
-                _animator.runtimeAnimatorController = _playerFacade.Weapon.AnimatorController;
+                _animator.runtimeAnimatorController = _facade.Weapon.AnimatorController;
             }
         }
 
         public void PlayAttack(int attackIndex)
         {
             _animator.CrossFade($"{AttackBase}{attackIndex}", _settings.attackFadeDuration);
+        }
+
+        public void PlaySpecial()
+        {
+            _animator.CrossFade(SpecialHash, _settings.specialFadeDuration);
+        }
+
+        public void PlayCast()
+        {
+            _animator.CrossFade(CastHash, _settings.castFadeDuration);
         }
 
         public void PlayDashAttack()
@@ -57,16 +69,22 @@ namespace Bellepron.Player
         }
 
         public float AttackFadeDuration => _settings.attackFadeDuration;
+        public float SpecialFadeDuration => _settings.specialFadeDuration;
+        public float CastFadeDuration => _settings.castFadeDuration;
         public float DashAttackFadeDuration => _settings.dashAttackFadeDuration;
 
         public bool IsPlayingAttack() => _animator.GetCurrentAnimatorStateInfo(0).tagHash == AttackTagHash;
+        public bool IsPlayingSpecial() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == SpecialHash;
+        public bool IsPlayingCast() => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == CastHash;
 
-        public float GetCurrentAttackNormalizedTime() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        public float GetNormalizedTime() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         [Serializable]
         public class Settings
         {
             public float attackFadeDuration = 0.05f;
+            public float specialFadeDuration = 0.05f;
+            public float castFadeDuration = 0.05f;
             public float dashAttackFadeDuration = 0.05f;
             public float movementFadeDuration = 0.1f;
             public float dashFadeDuration = 0.1f;
