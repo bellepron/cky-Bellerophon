@@ -1,4 +1,5 @@
 using Object = UnityEngine.Object;
+using Bellepron.Managers;
 using Bellepron.Player;
 using UnityEngine;
 using Zenject;
@@ -10,6 +11,7 @@ namespace Bellepron.Spawners
     {
         [Inject] readonly PlayerFacade.Factory _factory;
         [Inject] readonly PlayerHolder _playerHolder;
+        [Inject] readonly CameraManager _cameraManager;
         [Inject] readonly SignalBus _signalBus;
         [Inject] readonly PlayerSettings _playerSettings;
 
@@ -33,6 +35,7 @@ namespace Bellepron.Spawners
 
             SetWeapon();
 
+            _cameraManager.SetTarget(playerFacade.transform);
             _signalBus.Fire<PlayerSpawnedSignal>();
         }
 

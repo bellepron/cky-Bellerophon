@@ -9,6 +9,7 @@ namespace Bellepron
         {
             Debug.Log("<b><color=#FFD700>Controls</color></b>: \n" +
                 "<b><color=white>WASD-Movement,</color></b> " +
+                "<b><color=white>Q-Special,</color></b> " +
                 "<b><color=white>Mouse Left-Attack</color></b>, " +
                 "<b><color=white>Dash-Space</color></b>, " +
                 "<b><color=white>Interact-E</color></b>");

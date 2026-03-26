@@ -1,3 +1,4 @@
+using Bellepron.Managers;
 using Bellepron.Spawners;
 using Bellepron.Player;
 using Bellepron.Enemy;
@@ -12,6 +13,7 @@ namespace Bellepron
     {
         [Inject] readonly Settings _settings;
         [Inject] readonly PlayerSettings _playerSettings;
+        [SerializeField] CameraManager cameraManager;
         [SerializeField] CoroutineRunner coroutineRunner;
         [SerializeField] EnemyPrefabSettings _enemyPrefabSettings;
 
@@ -19,9 +21,9 @@ namespace Bellepron
         {
             #region General
 
-            Container.Bind<CoroutineRunner>()
-            .FromInstance(coroutineRunner)
-            .AsSingle();
+            Container.Bind<CameraManager>().FromInstance(cameraManager).AsSingle();
+
+            Container.Bind<CoroutineRunner>().FromInstance(coroutineRunner).AsSingle();
 
             Container.Bind<TimeScaleManager>().AsSingle();
 
