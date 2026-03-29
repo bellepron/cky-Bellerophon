@@ -12,10 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142497e7ed7d54f129b29979d40d2c9f, type: 3}
   m_Name: Default CastProjectileSettings
   m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Cast.CastProjectileSettings
-  speed: 18
+  speed: 15
   turnSpeed: 120
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 7680
   damage: 25
-  lifetime: 6
+  lifetime: 0.8
+  lifetimeOnEnemy: 2
   maxBounces: 3
-  bounceSearchRadius: 12
+  bounceSearchRadius: 2.5
   bounceLifetime: 2
+  residueWaitTime: 2
+  residueRadius: 1
+  residueReturnSpeed: 8
+  waitDurationOnEnemy: 10
+  travelTimeout: 5
+  arrivalRadius: 0.5
+  returnSpeed: 8

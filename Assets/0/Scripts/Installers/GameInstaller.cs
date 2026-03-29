@@ -78,6 +78,18 @@ namespace Bellepron
                        .FromComponentInNewPrefab(_playerSettings.PlayerAttackControllerSettings.defaultCastProjectilePrefab)
                        .UnderTransformGroup("Projectiles"));
 
+            Container.BindFactory<Vector3, GameObject, CastProjectileResidue.Phase, CastProjectileResidue, CastProjectileResidue.Factory>()
+                   .FromPoolableMemoryPool<Vector3, GameObject, CastProjectileResidue.Phase, CastProjectileResidue, CastProjectileResiduePool>(poolBinder => poolBinder
+                       .WithInitialSize(1)
+                       .FromComponentInNewPrefab(_playerSettings.PlayerAttackControllerSettings.castProjectileResiduePrefab)
+                       .UnderTransformGroup("Projectiles"));
+
+            Container.BindFactory<IDamageable, GameObject, CastProjectileEcho, CastProjectileEcho.Factory>()
+                   .FromPoolableMemoryPool<IDamageable, GameObject, CastProjectileEcho, CastProjectileEchoPool>(poolBinder => poolBinder
+                       .WithInitialSize(1)
+                       .FromComponentInNewPrefab(_playerSettings.PlayerAttackControllerSettings.castProjectileEchoPrefab)
+                       .UnderTransformGroup("Projectiles"));
+
             #endregion
 
             #region Signals
@@ -125,6 +137,16 @@ namespace Bellepron
 
         class DefaultCastProjectilePool : MonoPoolableMemoryPool<IDamageable, LayerMask, GameObject, IMemoryPool, CastProjectile>
         {
+        }
+
+        class CastProjectileResiduePool : MonoPoolableMemoryPool<Vector3, GameObject, CastProjectileResidue.Phase, IMemoryPool, CastProjectileResidue>
+        {
+
+        }
+
+        class CastProjectileEchoPool : MonoPoolableMemoryPool<IDamageable, GameObject, IMemoryPool, CastProjectileEcho>
+        {
+
         }
 
         #endregion

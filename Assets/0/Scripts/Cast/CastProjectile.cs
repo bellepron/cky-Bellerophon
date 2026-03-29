@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections;
+using Bellepron.Utility;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +9,8 @@ namespace Bellepron.Cast
     public class CastProjectile : MonoBehaviour, IPoolable<IDamageable, LayerMask, GameObject, IMemoryPool>
     {
         [SerializeField] CastProjectileSettings settings;
+        [Inject] CastProjectileResidue.Factory _residueFactory;
+        [Inject] CastProjectileEcho.Factory _echoFactory;
 
         bool _dead;
         IDamageable _target;
@@ -76,49 +79,77 @@ namespace Bellepron.Cast
         {
             if (_dead) return;
 
-            var hitTarget = other.GetComponent<IDamageable>();
+            _lifetimeCoroutine = StartCoroutine(LifetimeRoutine(settings.bounceLifetime));
 
-            // Ignore non-targets and already-hit enemies
-            if (hitTarget == null || _hitTargets.Contains(hitTarget)) return;
+            if (!settings.hitMask.Contains(other.gameObject.layer)) return;
 
-            _hitTargets.Add(hitTarget);
-
-            // ── Deal damage ───────────────────────────────────────────────────
-            hitTarget.TakeDamage(settings.damage, _instigator);
-            // SpawnVFX
-
-            _bouncesLeft--;
-
-            // ── Decide what happens next ──────────────────────────────────────
-            if (_bouncesLeft <= 0)
+            if (other.TryGetComponent<IDamageable>(out var hitTarget))
             {
-                // Reached max chain depth → die cleanly
-                DestroySelf(wasHit: true);
-                return;
-            }
+                // Ignore non-targets and already-hit enemies
+                if (hitTarget == null || _hitTargets.Contains(hitTarget)) return;
 
-            // Search for the nearest unhit enemy within the bounce radius
-            var nextTarget = FindNextBounceTarget(transform.position);
+                _hitTargets.Add(hitTarget);
 
-            if (_lifetimeCoroutine != null)
-                StopCoroutine(_lifetimeCoroutine);
+                // ── Deal damage ───────────────────────────────────────────────────
+                hitTarget.TakeDamage(settings.damage, _instigator);
+                // SpawnVFX
 
-            if (nextTarget != null)
-            {
-                _target = nextTarget;
-                // Re-point toward new target immediately so we don't U-turn awkwardly
-                Vector3 toNext = (nextTarget.Transform.position - transform.position).normalized;
-                if (toNext != Vector3.zero)
-                    transform.rotation = Quaternion.LookRotation(toNext);
+                _bouncesLeft--;
+
+                // ── Decide what happens next ──────────────────────────────────────
+                if (_bouncesLeft <= 0)
+                {
+                    // Reached max chain depth → die cleanly
+                    CreateCastProjectileEcho(hitTarget);
+                    DestroySelf(wasHit: true);
+                    return;
+                }
+
+                // Search for the nearest unhit enemy within the bounce radius
+                var nextTarget = FindNextBounceTarget(transform.position);
+
+                if (_lifetimeCoroutine != null)
+                    StopCoroutine(_lifetimeCoroutine);
+
+                if (nextTarget != null)
+                {
+                    _target = nextTarget;
+                    // Re-point toward new target immediately so we don't U-turn awkwardly
+                    Vector3 toNext = (nextTarget.Transform.position - transform.position).normalized;
+                    if (toNext != Vector3.zero)
+                        transform.rotation = Quaternion.LookRotation(toNext);
+                }
+                else
+                {
+                    // No target found nearby – keep flying for bounceLifetime and expire
+                    _target = null;
+                    CreateCastProjectileEcho(hitTarget);
+                    DestroySelf(wasHit: false);
+                }
             }
             else
             {
-                // No target found nearby – keep flying for bounceLifetime and expire
-                _target = null;
-            }
+                CreateCastProjectileResidue(transform.position - transform.forward, CastProjectileResidue.Phase.Waiting);
 
-            // Either way, switch to the shorter bounce timeout
-            _lifetimeCoroutine = StartCoroutine(LifetimeRoutine(settings.bounceLifetime));
+                DestroySelf(wasHit: true);
+            }
+        }
+
+        private void CreateCastProjectileResidue(Vector3 pos, CastProjectileResidue.Phase phase)
+        {
+            _residueFactory.Create(pos, _instigator, phase);
+        }
+
+        private void CreateCastProjectileEcho(IDamageable iDamageable)
+        {
+            if (iDamageable.IsAlive)
+            {
+                var echo = _echoFactory.Create(iDamageable, _instigator);
+            }
+            else
+            {
+                CreateCastProjectileResidue(iDamageable.Transform.position, CastProjectileResidue.Phase.Returning);
+            }
         }
 
         // ── Private helpers ───────────────────────────────────────────────────
@@ -176,7 +207,11 @@ namespace Bellepron.Cast
         private IEnumerator LifetimeRoutine(float duration)
         {
             yield return new WaitForSeconds(duration);
-            if (!_dead) DestroySelf(wasHit: false);
+            if (!_dead)
+            {
+                CreateCastProjectileResidue(transform.position, CastProjectileResidue.Phase.Waiting);
+                DestroySelf(wasHit: false);
+            }
         }
 
         private void DestroySelf(bool wasHit)

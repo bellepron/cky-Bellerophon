@@ -45,6 +45,8 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 512
     defaultCastProjectilePrefab: {fileID: 2229275543322186013, guid: a2fdd6374b1694334bfe9e7382b5e510, type: 3}
+    castProjectileResiduePrefab: {fileID: 7679852760200031103, guid: 2db4d89a8024f49ada32aa9eea98aaa4, type: 3}
+    castProjectileEchoPrefab: {fileID: 6118421318065269909, guid: 421c865e1d2194c6188e6db6d0ceb94f, type: 3}
   <PlayerDashControllerSettings>k__BackingField:
     playerDashEffectPrefab: {fileID: 6481795459346029894, guid: 9ae8d1130da3845f1a8a402555bea7e2, type: 3}
     dashSpeed: 30

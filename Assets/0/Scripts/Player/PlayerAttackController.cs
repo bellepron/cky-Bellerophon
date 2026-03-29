@@ -62,6 +62,8 @@ namespace Bellepron.Player
             public LayerMask obstacleLayer;
             public LayerMask enemyLayer;
             public GameObject defaultCastProjectilePrefab;
+            public GameObject castProjectileResiduePrefab;
+            public GameObject castProjectileEchoPrefab;
         }
     }
 }
