@@ -8,6 +8,7 @@ namespace Bellepron.Player
     public class PlayerAttackController
     {
         [Inject] readonly Settings _settings;
+        [Inject] readonly PlayerCastController.Settings _settingsCastController;
         [Inject] readonly PlayerFacade _facade;
         [Inject] readonly PlayerAnimatorController _animatorController;
         [Inject] readonly PlayerRotationController _rotationController;
@@ -44,14 +45,17 @@ namespace Bellepron.Player
         {
             _rotationController.RotateToMouse();
             _animatorController.PlayCast();
-            _facade.SetVelocity(-_facade.Forward * _settings.castBackwardForce);
+        }
+
+        public void ApplyCastBackwardForce()
+        {
+            _facade.SetVelocity(-_facade.Forward * _settingsCastController.castBackwardForce);
         }
 
         [Serializable]
         public class Settings
         {
-            public float attackForwardForce = 3.5f;
-            public float castBackwardForce = 3.5f;
+            public float attackForwardForce = 5f;
             public LayerMask wallLayer;
             public LayerMask obstacleLayer;
             public LayerMask enemyLayer;

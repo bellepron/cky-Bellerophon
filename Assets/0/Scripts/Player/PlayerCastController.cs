@@ -55,6 +55,7 @@ namespace Bellepron.Player
         [Serializable]
         public class Settings
         {
+            public float castBackwardForce = 3.5f;
             public LayerMask obstacleLayer;
             public LayerMask targetLayer;
             public GameObject defaultCastProjectilePrefab;

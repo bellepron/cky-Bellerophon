@@ -45,6 +45,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 512
   <PlayerCastControllerSettings>k__BackingField:
+    castBackwardForce: 5
     obstacleLayer:
       serializedVersion: 2
       m_Bits: 3072

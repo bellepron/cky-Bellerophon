@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Default CastProjectileSettings
   m_EditorClassIdentifier: Assembly-CSharp::Bellepron.Cast.CastProjectileSettings
   speed: 15
+  maxDistance: 10
+  bounceMaxDistance: 10
   turnSpeed: 120
   hitMask:
     serializedVersion: 2
     m_Bits: 7680
   damage: 25
-  lifetime: 0.8
   lifetimeOnEnemy: 2
   maxBounces: 3
   bounceSearchRadius: 2.5
@@ -27,6 +28,3 @@ MonoBehaviour:
   residueRadius: 1
   residueReturnSpeed: 8
   waitDurationOnEnemy: 10
-  travelTimeout: 5
-  arrivalRadius: 0.5
-  returnSpeed: 8
