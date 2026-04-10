@@ -28,6 +28,7 @@ namespace Bellepron
             Container.DeclareSignal<DashChargeUsedSignal>();
             Container.DeclareSignal<DashChargeRestoredSignal>();
             Container.DeclareSignal<DashRechargeSignal>();
+            Container.DeclareSignal<CastProjectileEchoSpawnedSignal>();
             Container.DeclareSignal<EnemySpawnedSignal>();
 
             Container.BindSignal<PlayerSpawnedSignal>().ToMethod<PlayerSpawnedSignalObserver>(x => x.OnTest).FromNew();

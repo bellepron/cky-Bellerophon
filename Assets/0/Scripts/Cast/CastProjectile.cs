@@ -148,7 +148,7 @@ namespace Bellepron.Cast
             }
             else
             {
-                CreateCastProjectileResidue(iDamageable.Transform.position, CastProjectileResidue.Phase.Returning);
+                CreateCastProjectileResidue(iDamageable.Transform.position, CastProjectileResidue.Phase.Waiting);
             }
         }
 

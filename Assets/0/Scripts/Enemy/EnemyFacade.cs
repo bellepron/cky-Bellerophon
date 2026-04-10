@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine.AI;
-using Bellepron.Cast;
 using UnityEngine;
 using Zenject;
 
@@ -9,8 +9,8 @@ namespace Bellepron.Enemy
     {
         [field: SerializeField] public EnemyType EnemyType { get; private set; }
         [field: SerializeField] public State State { get; set; }
-        [Inject(Id = "EnemiesParent")] private Transform _enemiesParent;
-        [Inject] readonly EnemyHealthController _enemyHealthController;
+        [Inject] private EnemiesParent _enemiesParent;
+        [Inject] readonly EnemyHealthController _healthController;
         // [Inject] readonly Animator _animator;
         [Inject] readonly CapsuleCollider _capsuleCollider;
         [Inject] readonly Rigidbody _rb;
@@ -18,7 +18,7 @@ namespace Bellepron.Enemy
         [Inject] readonly NavMeshAgent _navMeshAgent;
 
         public Transform Transform => transform;
-        public bool IsAlive => _enemyHealthController.IsAlive;
+        public bool IsAlive => _healthController.IsAlive;
         public Vector3 Forward => Rotation * Vector3.forward;
         public Vector3 Position => _rb.position;
         public Quaternion Rotation => _rb.rotation;
@@ -28,17 +28,16 @@ namespace Bellepron.Enemy
 
         public void TakeDamage(int damage, GameObject instigator)
         {
-            _enemyHealthController.ChangeHealth(-damage, instigator);
+            _healthController.ChangeHealth(-damage, instigator);
         }
 
         public void OnSpawned(Vector3 position, IMemoryPool pool)
         {
-
             _pool = pool;
 
             transform.position = position;
             gameObject.SetActive(true);
-
+            _healthController.OnSpawned();
             //Debug.Log($"[EnemyFacade] {EnemyType} spawned at {position}");
         }
 
@@ -52,12 +51,18 @@ namespace Bellepron.Enemy
 
         public void Despawn()
         {
+            StartCoroutine(DelayedDespawn());
+        }
+        IEnumerator DelayedDespawn()
+        {
+            _healthController.SetCurrentHealth(0);
+
+            yield return null; // For returning to the pool; CastProjectileEcho
+            // yield return new WaitForSeconds(0.5f);
             _pool?.Despawn(this);
-            transform.parent = _enemiesParent;
+            transform.parent = _enemiesParent.Transform;
         }
 
-        // Inner Factory Zenject SubContainer pattern
-        // Her enemy kendi bagimlilik scope'unda uretilir.
         public class Factory : PlaceholderFactory<Vector3, EnemyFacade> { }
     }
 }

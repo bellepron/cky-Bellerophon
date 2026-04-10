@@ -9,6 +9,9 @@ namespace Bellepron.Enemy
         [Header("Movement")]
         public float movementSpeed = 2.5f;
 
+        [Header("Health")]
+        public int health = 100;
+
         [Header("Attack")]
         public float attackableDistance = 2.0f;
 

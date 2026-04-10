@@ -57,7 +57,7 @@ namespace Bellepron.Cast
                 }
                 else if (_phase == Phase.Returning)
                 {
-                    transform.position += (_instigator.transform.position - transform.position).normalized * settings.residueReturnSpeed * Time.deltaTime;
+                    transform.position += (_instigator.transform.position - transform.position).normalized * _returnSpeed * Time.deltaTime;
                 }
             }
         }

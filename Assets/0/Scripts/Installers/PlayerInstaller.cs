@@ -24,6 +24,7 @@ namespace Bellepron.Player
             Container.Bind<PlayerRotationController>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerAnimatorController>().AsSingle();
             Container.Bind<PlayerAttackController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerCastController>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerDashController>().AsSingle();
             Container.Bind<PlayerGhostTrailController>().AsSingle();
             Container.Bind<PlayerGhostSpawner>().AsSingle();

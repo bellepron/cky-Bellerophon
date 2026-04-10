@@ -17,6 +17,13 @@ namespace Bellepron
         [SerializeField] CoroutineRunner coroutineRunner;
         [SerializeField] EnemyPrefabSettings _enemyPrefabSettings;
 
+        Transform _enemiesParent;
+        Transform _projectilesParent;
+        const string _nameEnemiesParent = "Enemies";
+        const string _nameProjectilesParent = "Projectiles";
+        const string _nameEffectsParent = "Effects";
+        const string _namePlayerGhostsParent = "PlayerGhosts";
+
         public override void InstallBindings()
         {
             #region General
@@ -42,21 +49,21 @@ namespace Bellepron
                    .FromPoolableMemoryPool<PlayerGhostFacade, PlayerGhostFacadePool>(poolBinder => poolBinder
                    .WithInitialSize(5)
                    .FromComponentInNewPrefab(_playerSettings.PlayerGhostTrailControllerSettings.playerGhostPrefab)
-                   .UnderTransformGroup("PlayerGhostPool"));
+                   .UnderTransformGroup(_namePlayerGhostsParent));
 
             Container.BindFactory<Vector3, Vector3, PlayerDashEffect, PlayerDashEffect.Factory>()
                 .FromPoolableMemoryPool<Vector3, Vector3, PlayerDashEffect, PlayerDashEffectPool>(poolBinder => poolBinder
                     .WithInitialSize(3)
                     .FromComponentInNewPrefab(_playerSettings.PlayerDashControllerSettings.playerDashEffectPrefab)
-                    .UnderTransformGroup("Effects"));
+                    .UnderTransformGroup(_nameEffectsParent));
 
             #endregion
 
             #region Enemies
 
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
-            var _enemiesParent = new GameObject("Enemies").transform;
-            Container.BindInstance(_enemiesParent).WithId("EnemiesParent").AsSingle();
+            _enemiesParent = new GameObject(_nameEnemiesParent).transform;
+            Container.Bind<EnemiesParent>().FromInstance(new EnemiesParent(_enemiesParent)).AsSingle();
 
             //// Resolve yok — Zenject constructor injection ile yapıyorum.
             BindEnemyPool(EnemyType.Satyr);
@@ -72,23 +79,26 @@ namespace Bellepron
 
             #region Cast Projectile
 
+            _projectilesParent = new GameObject(_nameProjectilesParent).transform;
+            Container.Bind<ProjectilesParent>().FromInstance(new ProjectilesParent(_projectilesParent)).AsSingle();
+
             Container.BindFactory<IDamageable, LayerMask, GameObject, CastProjectile, CastProjectile.Factory>()
                    .FromPoolableMemoryPool<IDamageable, LayerMask, GameObject, CastProjectile, DefaultCastProjectilePool>(poolBinder => poolBinder
                        .WithInitialSize(1)
-                       .FromComponentInNewPrefab(_playerSettings.PlayerAttackControllerSettings.defaultCastProjectilePrefab)
-                       .UnderTransformGroup("Projectiles"));
+                       .FromComponentInNewPrefab(_playerSettings.PlayerCastControllerSettings.defaultCastProjectilePrefab)
+                       .UnderTransformGroup(_nameProjectilesParent));
 
             Container.BindFactory<Vector3, GameObject, CastProjectileResidue.Phase, CastProjectileResidue, CastProjectileResidue.Factory>()
                    .FromPoolableMemoryPool<Vector3, GameObject, CastProjectileResidue.Phase, CastProjectileResidue, CastProjectileResiduePool>(poolBinder => poolBinder
                        .WithInitialSize(1)
-                       .FromComponentInNewPrefab(_playerSettings.PlayerAttackControllerSettings.castProjectileResiduePrefab)
-                       .UnderTransformGroup("Projectiles"));
+                       .FromComponentInNewPrefab(_playerSettings.PlayerCastControllerSettings.castProjectileResiduePrefab)
+                       .UnderTransformGroup(_nameProjectilesParent));
 
             Container.BindFactory<IDamageable, GameObject, CastProjectileEcho, CastProjectileEcho.Factory>()
                    .FromPoolableMemoryPool<IDamageable, GameObject, CastProjectileEcho, CastProjectileEchoPool>(poolBinder => poolBinder
                        .WithInitialSize(1)
-                       .FromComponentInNewPrefab(_playerSettings.PlayerAttackControllerSettings.castProjectileEchoPrefab)
-                       .UnderTransformGroup("Projectiles"));
+                       .FromComponentInNewPrefab(_playerSettings.PlayerCastControllerSettings.castProjectileEchoPrefab)
+                       .UnderTransformGroup(_nameProjectilesParent));
 
             #endregion
 
@@ -150,5 +160,25 @@ namespace Bellepron
         }
 
         #endregion
+    }
+
+    public class EnemiesParent
+    {
+        public Transform Transform { get; }
+
+        public EnemiesParent(Transform transform)
+        {
+            Transform = transform;
+        }
+    }
+
+    public class ProjectilesParent
+    {
+        public Transform Transform { get; }
+
+        public ProjectilesParent(Transform transform)
+        {
+            Transform = transform;
+        }
     }
 }

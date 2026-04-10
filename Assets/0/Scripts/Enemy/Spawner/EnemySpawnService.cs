@@ -47,12 +47,12 @@ namespace Bellepron.Enemy
 
     public class EnemyFacadePool : MonoPoolableMemoryPool<Vector3, IMemoryPool, EnemyFacade>
     {
-        [Inject(Id = "EnemiesParent")] private Transform _enemiesParent;
+        [Inject] private EnemiesParent _enemiesParent;
 
         protected override void OnCreated(EnemyFacade item)
         {
             base.OnCreated(item);
-            item.transform.SetParent(_enemiesParent);
+            item.transform.SetParent(_enemiesParent.Transform);
         }
     }
 }

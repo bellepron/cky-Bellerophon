@@ -1,5 +1,4 @@
 using Bellepron.Weapon;
-using Bellepron.Cast;
 using UnityEngine;
 using Zenject;
 using System;
@@ -12,7 +11,6 @@ namespace Bellepron.Player
         [Inject] readonly PlayerFacade _facade;
         [Inject] readonly PlayerAnimatorController _animatorController;
         [Inject] readonly PlayerRotationController _rotationController;
-        [Inject] readonly CastProjectile.Factory _defaultCastFactory;
         [Inject] readonly WeaponHolder _weaponHolder;
 
         public void Attack(int attackStep)
@@ -46,24 +44,17 @@ namespace Bellepron.Player
         {
             _rotationController.RotateToMouse();
             _animatorController.PlayCast();
-        }
-
-        public void Cast()
-        {
-            var castProjectile = _defaultCastFactory.Create(null, _settings.enemyLayer, _facade.gameObject);
-            castProjectile.transform.SetPositionAndRotation(_weaponHolder.leftHandCastTransform.position, _facade.Rotation);
+            _facade.SetVelocity(-_facade.Forward * _settings.castBackwardForce);
         }
 
         [Serializable]
         public class Settings
         {
             public float attackForwardForce = 3.5f;
+            public float castBackwardForce = 3.5f;
             public LayerMask wallLayer;
             public LayerMask obstacleLayer;
             public LayerMask enemyLayer;
-            public GameObject defaultCastProjectilePrefab;
-            public GameObject castProjectileResiduePrefab;
-            public GameObject castProjectileEchoPrefab;
         }
     }
 }

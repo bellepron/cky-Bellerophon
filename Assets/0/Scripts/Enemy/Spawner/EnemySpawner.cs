@@ -13,11 +13,11 @@ namespace Bellepron.Spawners
         public void Initialize()
         {
             Spawn(EnemyType.Satyr, new Vector3(-2, 0, 0));
-            Spawn(EnemyType.Minotaur, new Vector3(-3, 0, 0));
-            Spawn(EnemyType.Hydra, new Vector3(-4, 0, 0));
-            Spawn(EnemyType.Satyr, new Vector3(-6, 0, 0));
-            Spawn(EnemyType.Minotaur, new Vector3(-7, 0, 0));
-            Spawn(EnemyType.Hydra, new Vector3(-8, 0, 0));
+            // Spawn(EnemyType.Minotaur, new Vector3(-3, 0, 0));
+            // Spawn(EnemyType.Hydra, new Vector3(-4, 0, 0));
+            // Spawn(EnemyType.Satyr, new Vector3(-6, 0, 0));
+            // Spawn(EnemyType.Minotaur, new Vector3(-7, 0, 0));
+            // Spawn(EnemyType.Hydra, new Vector3(-8, 0, 0));
         }
 
         // API

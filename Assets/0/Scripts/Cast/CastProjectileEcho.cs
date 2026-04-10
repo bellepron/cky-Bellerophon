@@ -6,13 +6,15 @@ namespace Bellepron.Cast
     public class CastProjectileEcho : MonoBehaviour, IPoolable<IDamageable, GameObject, IMemoryPool>
     {
         [SerializeField] CastProjectileSettings settings;
-        [Inject] CastProjectileResidue.Factory _residueFactory;
+        [Inject] readonly CastProjectileResidue.Factory _residueFactory;
+        [Inject] readonly SignalBus _signalBus;
         IDamageable _host;
         GameObject _instigator;
         IMemoryPool _pool;
 
+        public bool IsHostAlive => _host.IsAlive;
+
         float _waitTimer;
-        float _travelTimeout;
 
         // ── IPoolable ──────────────────────────────────────────────────────────
 
@@ -24,8 +26,12 @@ namespace Bellepron.Cast
 
             _waitTimer = settings != null ? settings.waitDurationOnEnemy : 2f;
 
-            // Attach to the enemy so we follow it while waiting
+            // Attach to the enemy
             transform.SetParent(_host.Transform, worldPositionStays: false);
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+
+            _signalBus.Fire(new CastProjectileEchoSpawnedSignal { castProjectileEcho = this, pool = _pool });
 
             // TODO: Play "attached" VFX / idle animation
         }
@@ -36,7 +42,7 @@ namespace Bellepron.Cast
             _host = null;
             _instigator = null;
 
-            transform.SetParent(null);
+            transform.SetParent(null, worldPositionStays: false);
             // TODO: Stop any looping VFX
         }
 
@@ -66,7 +72,7 @@ namespace Bellepron.Cast
 
         private void CreateCastProjectileResidue(Vector3 pos)
         {
-            _residueFactory.Create(pos, _instigator, CastProjectileResidue.Phase.Returning);
+            _residueFactory.Create(pos, _instigator, CastProjectileResidue.Phase.Waiting);
         }
 
         // ── Editor Gizmos ─────────────────────────────────────────────────────

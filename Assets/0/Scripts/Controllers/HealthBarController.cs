@@ -1,6 +1,5 @@
 using UnityEngine.UI;
 using UnityEngine;
-using DG.Tweening;
 using TMPro;
 
 namespace Bellepron.UI
@@ -12,7 +11,7 @@ namespace Bellepron.UI
         float _currentValue;
         // Sequence _seq;
 
-        public void Initialize(int currentHealth, int maxHealth)
+        public void OnSpawned(int currentHealth, int maxHealth)
         {
             float _currentValue = (float)currentHealth / (float)maxHealth;
 

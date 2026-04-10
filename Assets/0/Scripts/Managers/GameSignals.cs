@@ -1,5 +1,7 @@
 using Bellepron.Weapon;
 using Bellepron.Enemy;
+using Zenject;
+using Bellepron.Cast;
 
 namespace Bellepron
 {
@@ -11,11 +13,6 @@ namespace Bellepron
     {
         public int weaponId;
         public WeaponType weaponType;
-    }
-
-    public struct EnemySpawnedSignal
-    {
-        public EnemyType spawnedEnemyType;
     }
 
     #region Dash Signals
@@ -41,4 +38,19 @@ namespace Bellepron
     }
 
     #endregion
+
+    #region Cast Signals
+
+    public struct CastProjectileEchoSpawnedSignal
+    {
+        public CastProjectileEcho castProjectileEcho;
+        public IMemoryPool pool;
+    }
+
+    #endregion
+
+    public struct EnemySpawnedSignal
+    {
+        public EnemyType spawnedEnemyType;
+    }
 }

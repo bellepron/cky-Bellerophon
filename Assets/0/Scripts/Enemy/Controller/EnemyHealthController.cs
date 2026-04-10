@@ -4,23 +4,27 @@ using Zenject;
 
 namespace Bellepron.Enemy
 {
-    public class EnemyHealthController : IInitializable
+    public class EnemyHealthController
     {
+        [Inject] EnemySettings _settings;
         [Inject] EnemyFacade _enemyFacade;
         [Inject] HealthBarController _healthBarController;
 
         public bool IsAlive => _currentHealth > 0;
 
-        int maxHealth = 100;
         int _currentHealth = 100;
 
-        public void Initialize()
+        public void SetCurrentHealth(int newHealth) => _currentHealth = newHealth;
+
+        public void OnSpawned()
         {
-            _healthBarController.Initialize(_currentHealth, maxHealth);
+            _currentHealth = _settings.health;
+            _healthBarController.OnSpawned(_currentHealth, _settings.health);
         }
 
         public void ChangeHealth(int delta, GameObject instigator)
         {
+            var maxHealth = _settings.health;
             var newHealth = _currentHealth + delta;
 
             if (delta > 0)

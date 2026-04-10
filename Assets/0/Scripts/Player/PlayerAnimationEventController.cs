@@ -1,5 +1,4 @@
 using Bellepron.Weapon;
-using Bellepron.Cast;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +9,7 @@ namespace Bellepron.Player
         [Inject] readonly PlayerFacade _facade;
         [Inject] readonly PlayerAttackController _attackController;
         [Inject] readonly PlayerAttackController.Settings _attackControllerSettings;
+        [Inject] readonly PlayerCastController _castController;
         [Inject] readonly PlayerDamageHandler _damageHandler;
 
         public void BeginHit()
@@ -46,7 +46,7 @@ namespace Bellepron.Player
 
         public void Cast()
         {
-            _attackController.Cast();
+            _castController.Cast();
         }
 
         public void Shoot()
