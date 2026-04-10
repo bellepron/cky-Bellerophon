@@ -17,7 +17,7 @@ namespace Bellepron.Cast
         LayerMask _hitMask;
         GameObject _instigator;
         int _bouncesLeft;
-        Coroutine _lifetimeCoroutine;
+        float _distanceTravelled;
 
         private readonly HashSet<IDamageable> _hitTargets
         = new HashSet<IDamageable>();
@@ -29,13 +29,14 @@ namespace Bellepron.Cast
             _pool = pool;
 
             _dead = false;
+            Debug.Log(target);
             _target = target;
             _hitMask = hitMask;
             _instigator = instigator;
 
             _hitTargets.Clear();
             _bouncesLeft = settings.maxBounces;
-            _lifetimeCoroutine = StartCoroutine(LifetimeRoutine(settings.lifetime));
+            _distanceTravelled = 0f;
         }
 
         public void OnDespawned()
@@ -62,15 +63,22 @@ namespace Bellepron.Cast
         {
             if (_dead || settings == null) return;
 
-            // Drop dead targets so we fly straight instead of chasing air
             if (_target != null && !_target.IsAlive)
-            {
                 _target = FindNextBounceTarget(transform.position);
-            }
 
             HomingRotation();
 
-            transform.position += transform.forward * (settings.speed * Time.deltaTime);
+            // ── Distance tracking ─────────────────────────────────────────────
+            float stepDistance = settings.speed * Time.deltaTime;
+            _distanceTravelled += stepDistance;
+
+            transform.position += transform.forward * stepDistance;
+
+            if (_distanceTravelled >= settings.maxDistance)
+            {
+                CreateCastProjectileResidue(transform.position, CastProjectileResidue.Phase.Waiting);
+                DestroySelf(wasHit: false);
+            }
         }
 
         // ── Collision ─────────────────────────────────────────────────────────
@@ -79,49 +87,40 @@ namespace Bellepron.Cast
         {
             if (_dead) return;
 
-            _lifetimeCoroutine = StartCoroutine(LifetimeRoutine(settings.bounceLifetime));
-
             if (!settings.hitMask.Contains(other.gameObject.layer)) return;
 
             if (other.TryGetComponent<IDamageable>(out var hitTarget))
             {
-                // Ignore non-targets and already-hit enemies
                 if (hitTarget == null || _hitTargets.Contains(hitTarget)) return;
 
                 _hitTargets.Add(hitTarget);
 
-                // ── Deal damage ───────────────────────────────────────────────────
                 hitTarget.TakeDamage(settings.damage, _instigator);
-                // SpawnVFX
 
                 _bouncesLeft--;
 
-                // ── Decide what happens next ──────────────────────────────────────
                 if (_bouncesLeft <= 0)
                 {
-                    // Reached max chain depth → die cleanly
                     CreateCastProjectileEcho(hitTarget);
                     DestroySelf(wasHit: true);
                     return;
                 }
 
-                // Search for the nearest unhit enemy within the bounce radius
                 var nextTarget = FindNextBounceTarget(transform.position);
-
-                if (_lifetimeCoroutine != null)
-                    StopCoroutine(_lifetimeCoroutine);
 
                 if (nextTarget != null)
                 {
                     _target = nextTarget;
-                    // Re-point toward new target immediately so we don't U-turn awkwardly
+
+                    // Bounce sonrası mesafeyi sıfırla
+                    _distanceTravelled = settings.maxDistance - settings.bounceMaxDistance;
+
                     Vector3 toNext = (nextTarget.Transform.position - transform.position).normalized;
                     if (toNext != Vector3.zero)
                         transform.rotation = Quaternion.LookRotation(toNext);
                 }
                 else
                 {
-                    // No target found nearby – keep flying for bounceLifetime and expire
                     _target = null;
                     CreateCastProjectileEcho(hitTarget);
                     DestroySelf(wasHit: false);
@@ -130,7 +129,6 @@ namespace Bellepron.Cast
             else
             {
                 CreateCastProjectileResidue(transform.position - transform.forward, CastProjectileResidue.Phase.Waiting);
-
                 DestroySelf(wasHit: true);
             }
         }
@@ -201,17 +199,6 @@ namespace Bellepron.Cast
             }
 
             return best;
-        }
-
-        /// <summary>Self-destruct after a duration without a hit.</summary>
-        private IEnumerator LifetimeRoutine(float duration)
-        {
-            yield return new WaitForSeconds(duration);
-            if (!_dead)
-            {
-                CreateCastProjectileResidue(transform.position, CastProjectileResidue.Phase.Waiting);
-                DestroySelf(wasHit: false);
-            }
         }
 
         private void DestroySelf(bool wasHit)

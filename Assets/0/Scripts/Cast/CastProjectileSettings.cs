@@ -8,6 +8,8 @@ namespace Bellepron.Cast
         [Header("Movement")]
         [Tooltip("Travel speed in units/second.")]
         public float speed = 18f;
+        public float maxDistance = 20f;       // toplam uçuş mesafesi
+        public float bounceMaxDistance = 10f; // bounce sonrası mesafe (isteğe bağlı)
 
         [Tooltip("Rotation speed toward target in degrees/second. Lower = lazier homing.")]
         public float turnSpeed = 120f;
@@ -18,8 +20,6 @@ namespace Bellepron.Cast
         public int damage = 25;
 
         [Header("Lifetime")]
-        [Tooltip("Total seconds before the projectile self-destructs when it misses everything.")]
-        public float lifetime = 6f;
         public float lifetimeOnEnemy = 2f;
 
         [Header("Bounce / Chain")]
