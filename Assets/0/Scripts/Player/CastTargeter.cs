@@ -14,6 +14,16 @@ namespace Bellepron.Player
         [SerializeField] private Camera mainCamera;
 
         public bool IsActive { get; private set; }
+        public EnemyFacade TargetEnemy { get; private set; }
+        public IDamageable Target
+        {
+            get
+            {
+                if (TargetEnemy == null) return null;
+                TargetEnemy.TryGetComponent<IDamageable>(out var damageable);
+                return damageable;
+            }
+        }
 
         private void Awake()
         {
@@ -44,14 +54,14 @@ namespace Bellepron.Player
 
             Vector3 mouseDir = GetMouseDirection();
 
-            EnemyFacade bestEnemy = GetBestEnemyByAngle(mouseDir);
+            TargetEnemy = GetBestEnemyByAngle(mouseDir);
 
             Vector3 lookDir = mouseDir;
             float pointerDistance;
 
-            if (bestEnemy != null)
+            if (TargetEnemy != null)
             {
-                var enemyPos = bestEnemy.transform.position;
+                var enemyPos = TargetEnemy.transform.position;
                 enemyPos.y = 0;
                 var thisPos = transform.position;
                 thisPos.y = 0;
