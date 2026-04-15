@@ -46,7 +46,7 @@ namespace Bellepron.Player
 
         public void Cast()
         {
-            _castController.Cast();
+            _castController.CreateCast();
             _attackController.ApplyCastBackwardForce();
         }
 

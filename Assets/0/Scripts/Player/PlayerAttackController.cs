@@ -8,6 +8,7 @@ namespace Bellepron.Player
     public class PlayerAttackController
     {
         [Inject] readonly Settings _settings;
+        [Inject] readonly PlayerCastController _castController;
         [Inject] readonly PlayerCastController.Settings _settingsCastController;
         [Inject] readonly PlayerFacade _facade;
         [Inject] readonly PlayerAnimatorController _animatorController;
@@ -43,8 +44,7 @@ namespace Bellepron.Player
 
         public void TriggerCast()
         {
-            _rotationController.RotateToMouse();
-            _animatorController.PlayCast();
+            _castController.TriggerCast();
         }
 
         public void ApplyCastBackwardForce()

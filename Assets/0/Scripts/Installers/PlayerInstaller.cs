@@ -10,6 +10,7 @@ namespace Bellepron.Player
         [SerializeField] PlayerAnimationEventController playerAnimationEventController;
         [SerializeField] WeaponHolder weaponHolder;
         [SerializeField] CinemachineImpulseSource cinemachineImpulseSource;
+        [SerializeField] CastTargeter castTargeter;
 
         public override void InstallBindings()
         {
@@ -18,6 +19,7 @@ namespace Bellepron.Player
             Container.Bind<PlayerAnimationEventController>().FromInstance(playerAnimationEventController).AsSingle();
             Container.Bind<WeaponHolder>().FromInstance(weaponHolder).AsSingle();
             Container.Bind<CinemachineImpulseSource>().FromInstance(cinemachineImpulseSource).AsSingle();
+            Container.Bind<CastTargeter>().FromInstance(castTargeter).AsSingle();
             Container.Bind<PlayerStatus>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerStateMachine>().AsSingle().NonLazy();
             Container.Bind<PlayerMovementController>().AsSingle();
