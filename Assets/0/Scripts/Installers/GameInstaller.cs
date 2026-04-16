@@ -34,6 +34,10 @@ namespace Bellepron
 
             Container.Bind<TimeScaleManager>().AsSingle();
 
+            Container.Bind<GameStateController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UIManager>().AsSingle();
+            Container.Bind<CursorController>().AsSingle();
+
             #endregion
 
             #region Player
