@@ -39,7 +39,7 @@ namespace Bellepron.Player
         public void CreateCast()
         {
             _castTargeter.Activate(false);
-            var castProjectile = _defaultCastFactory.Create(_castTargeter.Target, _settings.targetLayer, _facade.gameObject);
+            var castProjectile = _defaultCastFactory.Create(_castTargeter, _castTargeter.Target, _settings.targetLayer, _facade.gameObject);
             castProjectile.transform.SetPositionAndRotation(_weaponHolder.leftHandCastTransform.position, _facade.Rotation);
         }
 

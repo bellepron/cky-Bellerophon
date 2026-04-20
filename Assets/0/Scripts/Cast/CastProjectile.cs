@@ -1,16 +1,18 @@
 using System.Collections.Generic;
-using System.Collections;
 using Bellepron.Utility;
+using Bellepron.Player;
 using UnityEngine;
 using Zenject;
 
 namespace Bellepron.Cast
 {
-    public class CastProjectile : MonoBehaviour, IPoolable<IDamageable, LayerMask, GameObject, IMemoryPool>
+    public class CastProjectile : MonoBehaviour, IPoolable<CastTargeter, IDamageable, LayerMask, GameObject, IMemoryPool>
     {
         [SerializeField] CastProjectileSettings settings;
         [Inject] CastProjectileResidue.Factory _residueFactory;
         [Inject] CastProjectileEcho.Factory _echoFactory;
+
+        CastTargeter _castTargeter;
 
         bool _dead;
         IDamageable _target;
@@ -24,12 +26,12 @@ namespace Bellepron.Cast
 
         IMemoryPool _pool;
 
-        public void OnSpawned(IDamageable target, LayerMask hitMask, GameObject instigator, IMemoryPool pool)
+        public void OnSpawned(CastTargeter castTargeter, IDamageable target, LayerMask hitMask, GameObject instigator, IMemoryPool pool)
         {
             _pool = pool;
 
             _dead = false;
-            Debug.Log(target);
+            _castTargeter = castTargeter;
             _target = target;
             _hitMask = hitMask;
             _instigator = instigator;
@@ -65,6 +67,11 @@ namespace Bellepron.Cast
 
             if (_target != null && !_target.IsAlive)
                 _target = FindNextBounceTarget(transform.position);
+
+            if (_target == null && _castTargeter != null)
+            {
+                _target = _castTargeter.GetBestEnemyByAngle(transform, settings.maxTargetFindingAngle);
+            }
 
             HomingRotation();
 
@@ -156,6 +163,7 @@ namespace Bellepron.Cast
         private void HomingRotation()
         {
             if (_target == null || !_target.IsAlive) return;
+            Debug.Log("Homing Rotation...");
 
             Vector3 direction = _target.Transform.position - transform.position;
             direction.y = 0;
@@ -236,7 +244,7 @@ namespace Bellepron.Cast
         }
 #endif
 
-        public class Factory : PlaceholderFactory<IDamageable, LayerMask, GameObject, CastProjectile>
+        public class Factory : PlaceholderFactory<CastTargeter, IDamageable, LayerMask, GameObject, CastProjectile>
         {
 
         }

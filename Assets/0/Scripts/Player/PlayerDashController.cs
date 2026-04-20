@@ -10,7 +10,6 @@ namespace Bellepron.Player
     public class PlayerDashController : ITickable, IInitializable
     {
         [Inject] readonly CoroutineRunner _coroutineRunner;
-        [Inject] readonly TimeScaleManager _timeScaleManager;
         [Inject] readonly Settings _settings;
         [Inject] readonly PlayerFacade _facade;
         [Inject] readonly PlayerInputHandler _inputHandler;
@@ -21,6 +20,7 @@ namespace Bellepron.Player
         [Inject] readonly PlayerStatus _playerStatus;
         [Inject] readonly PlayerDashEffect.Factory _dashEffectFactory;
         [Inject] readonly PlayerDamageHandler _damageHandler;
+        [Inject] readonly PlayerCastController _castController;
         [Inject] readonly SignalBus _signalBus;
 
         int _dashCharges;
@@ -101,6 +101,8 @@ namespace Bellepron.Player
 
         void StartDash()
         {
+            _castController.Interrupt();
+
             _damageHandler.ClearHitRegistry();
 
             var dashDir = _inputHandler.Get_MovementVectorSnapped.magnitude > 0.1f ? _inputHandler.Get_MovementVectorSnapped : _facade.Forward;

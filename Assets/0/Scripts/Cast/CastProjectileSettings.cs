@@ -13,6 +13,7 @@ namespace Bellepron.Cast
 
         [Tooltip("Rotation speed toward target in degrees/second. Lower = lazier homing.")]
         public float turnSpeed = 120f;
+        public float maxTargetFindingAngle = 90f;
 
         [Header("Damage")]
         [Tooltip("Damage dealt per hit.")]

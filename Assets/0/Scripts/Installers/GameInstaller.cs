@@ -86,8 +86,8 @@ namespace Bellepron
             _projectilesParent = new GameObject(_nameProjectilesParent).transform;
             Container.Bind<ProjectilesParent>().FromInstance(new ProjectilesParent(_projectilesParent)).AsSingle();
 
-            Container.BindFactory<IDamageable, LayerMask, GameObject, CastProjectile, CastProjectile.Factory>()
-                   .FromPoolableMemoryPool<IDamageable, LayerMask, GameObject, CastProjectile, DefaultCastProjectilePool>(poolBinder => poolBinder
+            Container.BindFactory<CastTargeter, IDamageable, LayerMask, GameObject, CastProjectile, CastProjectile.Factory>()
+                   .FromPoolableMemoryPool<CastTargeter, IDamageable, LayerMask, GameObject, CastProjectile, DefaultCastProjectilePool>(poolBinder => poolBinder
                        .WithInitialSize(1)
                        .FromComponentInNewPrefab(_playerSettings.PlayerCastControllerSettings.defaultCastProjectilePrefab)
                        .UnderTransformGroup(_nameProjectilesParent));
@@ -149,7 +149,7 @@ namespace Bellepron
 
         #region Cast Projectile Pools
 
-        class DefaultCastProjectilePool : MonoPoolableMemoryPool<IDamageable, LayerMask, GameObject, IMemoryPool, CastProjectile>
+        class DefaultCastProjectilePool : MonoPoolableMemoryPool<CastTargeter, IDamageable, LayerMask, GameObject, IMemoryPool, CastProjectile>
         {
         }
 

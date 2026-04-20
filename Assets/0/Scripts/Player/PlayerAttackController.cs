@@ -13,10 +13,10 @@ namespace Bellepron.Player
         [Inject] readonly PlayerFacade _facade;
         [Inject] readonly PlayerAnimatorController _animatorController;
         [Inject] readonly PlayerRotationController _rotationController;
-        [Inject] readonly WeaponHolder _weaponHolder;
 
         public void Attack(int attackStep)
         {
+            _castController.Interrupt();
             _rotationController.RotateToMouse();
             _animatorController.PlayAttack(attackStep);
             _facade.SetVelocity(_facade.Forward * _settings.attackForwardForce);
@@ -38,6 +38,7 @@ namespace Bellepron.Player
 
         public void Special()
         {
+            _castController.Interrupt();
             _rotationController.RotateToMouse();
             _animatorController.PlaySpecial();
         }

@@ -122,6 +122,7 @@ namespace Bellepron.Player
             {
                 EnemyFacade facade = hit.GetComponentInParent<EnemyFacade>();
                 if (facade == null) continue;
+                if (!facade.IsAlive) continue;
 
                 Vector3 toEnemy = hit.transform.position - transform.position;
                 toEnemy.y = 0f;
@@ -131,7 +132,7 @@ namespace Bellepron.Player
 
                 if (angle >= bestAngle) continue;
 
-                if (HasObstacleBetween(hit.transform.position)) continue;
+                if (HasObstacleBetween(transform.position, hit.transform.position)) continue;
 
                 bestAngle = angle;
                 best = facade;
@@ -140,9 +141,44 @@ namespace Bellepron.Player
             return best;
         }
 
-        private bool HasObstacleBetween(Vector3 targetPosition)
+        public IDamageable GetBestEnemyByAngle(Transform projectileTransform, float maxTargetFindingAngle)
         {
-            Vector3 origin = transform.position;
+            Collider[] hits = Physics.OverlapSphere(
+               projectileTransform.position,
+                _settingsCastController.pointerMaxDistance,
+                _settingsCastController.targetLayer
+            );
+
+            IDamageable best = null;
+            float bestAngle = float.MaxValue;
+
+            foreach (Collider hit in hits)
+            {
+                EnemyFacade facade = hit.GetComponentInParent<EnemyFacade>();
+                if (facade == null) continue;
+                if (!facade.IsAlive) continue;
+
+                Vector3 toEnemy = hit.transform.position - transform.position;
+                toEnemy.y = 0f;
+
+                float angle = Vector3.Angle(projectileTransform.forward, toEnemy.normalized);
+                if (angle > maxTargetFindingAngle) continue;
+
+                if (angle >= bestAngle) continue;
+
+                if (HasObstacleBetween(projectileTransform.position, hit.transform.position)) continue;
+
+                bestAngle = angle;
+
+                if (facade.TryGetComponent<IDamageable>(out var iDamageable))
+                    best = iDamageable;
+            }
+
+            return best;
+        }
+
+        private bool HasObstacleBetween(Vector3 origin, Vector3 targetPosition)
+        {
             Vector3 direction = targetPosition - origin;
             float distance = direction.magnitude;
 
